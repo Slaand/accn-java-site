@@ -1,6 +1,6 @@
 html {
     background-size: cover;
-    background: url("/img/background.jpg") no-repeat fixed center;
+    background: url("../img/background.jpg") no-repeat fixed center;
 }
 
 #appcontainer {
