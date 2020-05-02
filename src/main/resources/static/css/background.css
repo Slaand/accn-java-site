@@ -1,0 +1,20 @@
+html {
+    background-size: cover;
+    background: url("/img/background.jpg") no-repeat fixed center;
+}
+
+#appcontainer {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 90%;
+    min-height: 95%;
+    left: 5%;
+    top: 5%;
+}
+
+.item-view {
+    padding: 30px 30px 10px;
+    background-color: #fff;
+    /*margin-top: 70px;*/
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+}
