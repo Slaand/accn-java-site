@@ -1,7 +1,7 @@
 spring:
   profiles: prod
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/spring?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/spring?useUnicode=true&characterEncoding=UTF-8
     username: base
     password: ZaQBRLswyt!TmCmJtGhyC
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -15,7 +15,7 @@ spring:
       org.hibernate.SQL: DEBUG
   flyway:
     enabled: true
-    url: jdbc:mariadb://127.0.0.1:3306/spring?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/spring?useUnicode=true&characterEncoding=UTF-8
   data:
     redis:
       repositories:
