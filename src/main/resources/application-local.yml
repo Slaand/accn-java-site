@@ -1,0 +1,33 @@
+mariaDB4j:
+  port: 3307
+
+spring:
+  profiles: local
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3307/spring?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password:
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+  flyway:
+    enabled: true
+    url: jdbc:mysql://127.0.0.1:3307/spring?useUnicode=true&characterEncoding=UTF-8&createDatabaseIfNotExist=true
+  data:
+    redis:
+      repositories:
+        enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+server:
+  port: 8080
