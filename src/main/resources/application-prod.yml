@@ -4,7 +4,7 @@ spring:
     url: jdbc:mariadb://127.0.0.1:3306/spring?useUnicode=true&characterEncoding=UTF-8
     username: base
     password: ZaQBRLswyt!TmCmJtGhyC
-    driverClassName: org.mariadb.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
