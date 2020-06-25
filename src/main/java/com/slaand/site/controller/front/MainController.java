@@ -1,4 +1,4 @@
-package com.slaand.site.controller;
+package com.slaand.site.controller.front;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,9 @@
 mariaDB4j:
   port: 3307
 
+server:
+  port: 8080
+
 spring:
   profiles: local
   datasource:
@@ -20,6 +23,8 @@ spring:
       org.hibernate.SQL: DEBUG
   flyway:
     enabled: true
+    username: root
+    password:
     url: jdbc:mysql://127.0.0.1:3307/spring?useUnicode=true&characterEncoding=UTF-8&createDatabaseIfNotExist=true
   data:
     redis:
@@ -29,5 +34,12 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
 
-server:
-  port: 8080
+cache:
+  redis:
+    enabled: false
+    host: localhost
+    port: 6379
+    timeout: 120ms
+    custom:
+      socket:
+        timeout: 400ms
