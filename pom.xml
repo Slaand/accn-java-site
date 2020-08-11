@@ -38,9 +38,9 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>prod</id>
+			<id>remote</id>
 			<properties>
-				<spring.profiles.active>prod</spring.profiles.active>
+				<spring.profiles.active>remote</spring.profiles.active>
 			</properties>
 			<dependencies>
 			</dependencies>
