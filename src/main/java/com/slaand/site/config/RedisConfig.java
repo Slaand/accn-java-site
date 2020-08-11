@@ -42,7 +42,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Value("${cache.redis.timeout}")
     private Duration redisTimeout;
 
-    @Value("${cache.custom.socket.timeout}")
+    @Value("${cache.redis.custom.socket.timeout}")
     private Duration redisSocketTimeout;
 
     @Bean
