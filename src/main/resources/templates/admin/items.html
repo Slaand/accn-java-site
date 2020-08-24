@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
+
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/admin :: header">Header element</div>
+
+<!-- Page Content -->
+<section class="pb-5">
+    <div class="container">
+
+        <div class="text-center">
+            <div class="row">
+                <div class="col">
+                    <h6><i class="fa fa-lg fa-shopping-cart" aria-hidden="true"></i> Список магазинов</h6>
+                </div>
+                <div class="col">
+                    <div class="spoiler-toggle">
+                        <h6><i class="fa fa-lg fa-plus" aria-hidden="true"></i> Добавить магазин</h6>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+        </div>
+
+        <div class="spoiler mb-4" style="display: none;">
+            <form th:action="@{/admin/shops}" method="post" th:object="${shopEntry}">
+                <div class="form-group row justify-content-center">
+                    <div class="col-sm-2">Магазин</div>
+                    <div class="col-sm-4">
+                        <select class="custom-select" name="shop">
+                            <!-- <option selected>Выбрать...</option> -->
+                            <th:block th:each="shop : ${shopEnum}">
+                                <option th:value="${shop}" th:text="${shop.getName()}">Текст</option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center" th:each="info : ${infoEnum}">
+                    <div class="col-sm-2">
+                        <label th:attr="for=${info}" class="col-form-label" th:text="${info.getDescription()}"></label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input class="form-control" name="info" th:attr="id=${info}">
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-sm-2">Доставка</div>
+                    <div class="col-sm-4">
+                        <div class="form-check" th:each="delivery : ${deliveryEnum}">
+                            <input class="form-check-input" type="checkbox" th:value="${delivery}" name="delivery" th:attr="id=${delivery}">
+                            <label th:attr="for=${delivery}" class="form-check-label"
+                                   th:text="${delivery.getDescription()}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <div class="col-sm-2">Способы оплаты</div>
+                    <div class="col-sm-4">
+                        <div class="form-check" th:each="payment : ${paymentEnum}">
+                            <input class="form-check-input" type="checkbox" th:value="${payment}" name="payment" th:attr="id=${payment}">
+                            <label th:attr="for=${payment}" class="form-check-label"
+                                   th:text="${payment.getDescription()}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <div class="col-sm-2">
+                        <br>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-primary">Создать магазин</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+        </div>
+
+        <ul class="list-group list-group-flush" th:each="shop : ${shops}">
+            <li class="list-group-item">
+                <b>Имя:</b> <p th:text="${shop.getName()}">text</p>
+                <b>Информация:</b> <span th:each="info : ${shop.getInfo()}"><p th:text="${info}">text</p></span>
+                <b>Доставки:</b> <span th:each="delivery : ${shop.getDelivery()}"><p th:text="${delivery}">text</p></span>
+                <b>Способы оплаты:</b> <span th:each="payment : ${shop.getPayments()}"><p th:text="${payment}">text</p></span>
+                <button type="button" class="btn btn-primary btn-sm">Удалить</button>
+            </li>
+        </ul>
+
+        <th:block th:unless="${shops.size() > 0}">
+            <p class="font-weight-light text-center">Магазины не добавлены!</p>
+        </th:block>
+
+    </div>
+</section>
+
+<div th:replace="fragments/admin :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+$(function(){
+    $('.spoiler-toggle').click(function(){
+        $('.spoiler').animate({height: 'toggle'});
+    }); // end spoiler-toggle
+}); // end document ready
+</script>
+
+</body>
+</html>

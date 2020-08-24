@@ -1,10 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 </head>
+
 <body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/header :: search">Search element</div>
+
+<!-- Page Content -->
+<section class="py-5 text-center">
+    <div class="container">
+
+        <div class="row">
+            <div class="col"><h6><i class="fa fa-lg fa-comment" aria-hidden="true"></i> Связь с нами</h6></div>
+        </div>
+        <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+
+        <div class="row justify-content-center" th:if="${messageType != null}">
+            <div class="col-8">
+                <div class="alert" role="alert" th:classappend="${messageType}" th:text="${message}">
+                    Text message.
+                </div>
+            </div>
+        </div>
+
+        <form th:action="@{/feedback}" method="post" th:object="${feedback}">
+            <div sec:authorize="!isAuthenticated()">
+                <div class="form-group row justify-content-center">
+                    <label for="name" class="col-sm-2 col-form-label">Имя</label>
+                    <div class="col-sm-4">
+                        <input id="name" class="form-control" th:classappend="${nameError == null ? '' : 'is-invalid'}" th:field="*{name}"/>
+                        <th:block th:unless="${nameError == null}">
+                            <div class="invalid-feedback" th:text="${nameError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <div class="form-group row justify-content-center">
+                    <label for="email" class="col-sm-2 col-form-label">Е-почта</label>
+                    <div class="col-sm-4">
+                        <input id="email" class="form-control" th:classappend="${emailError == null ? '' : 'is-invalid'}" th:field="*{email}"/>
+                        <th:block th:unless="${emailError == null}">
+                            <div class="invalid-feedback" th:text="${emailError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="form-group">
+                <div class="row justify-content-center" style="padding-top: 8px;">
+                    <legend class="col-form-label col-sm-2 pt-0">Тип обращения</legend>
+                    <div class="col-sm-4 float-left">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="gridRadios1"
+                                   th:value="VERIFICATION" th:field="*{type}">
+                            <label class="form-check-label" for="gridRadios1" style="width: 315px; text-align: left;">
+                                Верификация
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="gridRadios2" th:value="REMOVAL"
+                                   th:field="*{type}">
+                            <label class="form-check-label" for="gridRadios2" style="width: 315px; text-align: left;">
+                                Исключение магазина
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="gridRadios3"
+                                   th:value="ADDITION" th:field="*{type}">
+                            <label class="form-check-label" for="gridRadios3" style="width: 315px; text-align: left;">
+                                Добавление магазина
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="gridRadios4" th:value="REVIEW"
+                                   th:field="*{type}">
+                            <label class="form-check-label" for="gridRadios4" style="width: 315px; text-align: left;">
+                                Отзыв
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="gridRadios5" th:value="OTHER"
+                                   th:field="*{type}">
+                            <label class="form-check-label" for="gridRadios5" style="width: 315px; text-align: left;">
+                                Другое
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group row justify-content-center">
+                <label for="message" class="col-sm-2 col-form-label">Сообщение</label>
+                <div class="col-sm-4">
+                    <textarea id="message" class="form-control"
+                              th:classappend="${messageError == null ? '' : 'is-invalid'}" rows="5"
+                              th:field="*{message}"></textarea>
+                    <th:block th:unless="${messageError == null}">
+                        <div class="invalid-feedback" th:text="${messageError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center pt-3 mt-3">
+                <div class="col-sm-4">
+
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<div th:replace="fragments/footer :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+    $.get("http://localhost:8080/api/items/names", function (data) {
+        console.log(data);
+        // use a data source with 'id' and 'name' keys
+        $("#query").typeahead({source: data});
+    }, 'json');
+</script>
 
 </body>
 </html>

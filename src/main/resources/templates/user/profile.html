@@ -1,10 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 </head>
+
 <body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/header :: search">Search element</div>
+
+<!-- Page Content -->
+<section class="py-5">
+    <div class="container">
+
+
+        <div class="row text-center">
+            <div class="col-12">
+                <h6><i class="fa fa-lg fa-list" aria-hidden="true"></i> Профиль пользователя</h6>
+            </div>
+            <div class="col-12">
+                <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+            </div>
+        </div>
+
+        <div sec:authorize="!isAuthenticated()">
+            <p class="text-center">Пользователь не найден! Необходимо провести <a
+                    th:href="@{/user/login}">авторизацию</a></p>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <th:block th:object="${user}">
+                <div class="form-group row justify-content-center">
+                    <label for="name" class="col-sm-2 col-form-label">Имя</label>
+                    <div class="col-sm-4">
+                        <input id="name" class="form-control" th:classappend="${nameError == null ? '' : 'is-invalid'}"
+                               th:attrappend="placeholder=${user.name}" th:field="*{name}" disabled/>
+                        <th:block th:unless="${nameError == null}">
+                            <div class="invalid-feedback" th:text="${nameError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <label for="surname" class="col-sm-2 col-form-label">Фамилия</label>
+                    <div class="col-sm-4">
+                        <input id="surname" class="form-control"
+                               th:classappend="${surnameError == null ? '' : 'is-invalid'}"
+                               th:attrappend="placeholder=${user.surname}" th:field="*{surname}" disabled/>
+                        <th:block th:unless="${surnameError == null}">
+                            <div class="invalid-feedback" th:text="${surnameError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <label for="email" class="col-sm-2 col-form-label">E-mail</label>
+                    <div class="col-sm-4">
+                        <input id="email" class="form-control"
+                               th:classappend="${emailError == null ? '' : 'is-invalid'}"
+                               th:attrappend="placeholder=${user.email}" th:field="*{email}" disabled/>
+                        <th:block th:unless="${emailError == null}">
+                            <div class="invalid-feedback" th:text="${emailError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+        <div class="row text-center pt-3 mt-3">
+            <div class="col-12">
+                <h6><i class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i> Отзывы на ваш магазин</h6>
+            </div>
+            <div class="col-12">
+                <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+            </div>
+        </div>
+
+        <!--        <div class="spoiler mb-4" style="display: none;">-->
+        <div class="spoiler mb-4">
+            <form th:action="@{/user/panel}" method="post" th:object="${review}">
+                <div class="form-group row justify-content-center">
+                    <label for="shopResponse" class="col-sm-2 col-form-label">Сообщение</label>
+                    <div class="col-sm-4">
+                    <textarea id="shopResponse" class="form-control"
+                              th:classappend="${shopResponseError == null ? '' : 'is-invalid'}" rows="5"
+                              th:field="*{shopResponse}"></textarea>
+                        <th:block th:unless="${shopResponseError == null}">
+                            <div class="invalid-feedback" th:text="${shopResponseError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center pt-3 mt-3">
+                    <div class="col-sm-4">
+
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row text-center">
+                <div class="col-12">
+                    <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <th:block th:if="${listReviews.size() > 0}" th:each="message : ${listReviews}">
+                <div class="col-12 mb-3">
+                    <div class="card border-dark bg-white"> <!-- заменить -->
+                        <div class="card-body">
+                            <!--                            <p class="card-title">Магазин: 1A</p>-->
+                            <p class="card-text" th:text="${message.getMessage()}">text</p>
+                            <div class="row no-gutters" style="margin-bottom:-20px">
+                                <div class="col-2 align-bottom">
+                                    <span><th:block
+                                            th:text="${message.getDate().toString()}">Some stars! </th:block></span>
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-primary btn-sm">Ответить</button>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <p th:unless="${message.getAuthor()} == null"
+                                       th:text="${message.getAuthor().getName()}">Александр</p>
+                                    <p th:if="${message.getAuthor()} == null">Аноним</p>
+                                </div>
+                            </div>
+
+                            <hr class="mx-auto w-50 align-left">
+                            <div class="row justify-content-md-left mt-3">
+                                <div class="col">
+                                    <i class="fa fa-reply" aria-hidden="true"></i>
+                                    <i>Ответ продавца: Спасибо вам за отзыв!</i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+    </div>
+</section>
+
+<div th:replace="fragments/footer :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+    $.get("http://localhost:8080/api/items/names", function (data) {
+        console.log(data);
+        // use a data source with 'id' and 'name' keys
+        $("#query").typeahead({source: data});
+    }, 'json');
+
+    $(function () {
+        $('.spoiler-toggle').click(function () {
+            $('.spoiler').animate({height: 'toggle'});
+        }); // end spoiler-toggle
+    }); // end document ready
+</script>
 
 </body>
 </html>

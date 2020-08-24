@@ -1,7 +1,14 @@
 package com.slaand.site.model.enumerated;
 
-public enum UserRole {
+import org.springframework.security.core.GrantedAuthority;
 
-    ADMIN, USER
+public enum UserRole implements GrantedAuthority {
+
+    ADMIN, USER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 
 }

@@ -1,6 +1,9 @@
 package com.slaand.site.model.entity;
 
 import com.slaand.site.model.enumerated.OrderStatus;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
 
+@Data
+@Builder
 @Entity
 @Table(name = "tbl_order")
 public class OrderEntity {

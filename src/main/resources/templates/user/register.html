@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/header :: search">Search element</div>
+
+<!-- Page Content -->
+<section class="py-5 text-center">
+    <div class="container">
+
+        <div class="row">
+            <div class="col"><h6><i class="fa fa-lg fa-plus" aria-hidden="true"></i> Регистрация</h6></div>
+        </div>
+        <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+        <!--            <p class="text-muted mb-5 text-center">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>-->
+
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <!-- Пока оставляем для возможного шаблона -->
+                <div th:unless="${captchaError == null}">
+                    <div class="alert alert-danger" role="alert" th:text="${captchaError}">
+                        Сообщение связанное с капчей
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form th:action="@{/user/registration}" method="post" th:object="${user}">
+
+            <div class="form-group row justify-content-center">
+                <label for="username" class="col-sm-2 col-form-label">Логин</label>
+                <div class="col-sm-4">
+                    <input id="username" class="form-control" th:classappend="${usernameError == null ? '' : 'is-invalid'}" th:field="*{username}" />
+                    <th:block th:unless="${usernameError == null}">
+                        <div class="invalid-feedback" th:text="${usernameError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="name" class="col-sm-2 col-form-label">Имя</label>
+                <div class="col-sm-4">
+                    <input id="name" class="form-control" th:classappend="${nameError == null ? '' : 'is-invalid'}" th:field="*{name}" />
+                    <th:block th:unless="${nameError == null}">
+                        <div class="invalid-feedback" th:text="${nameError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="surname" class="col-sm-2 col-form-label">Фамилия</label>
+                <div class="col-sm-4">
+                    <input id="surname" class="form-control" th:classappend="${surnameError == null ? '' : 'is-invalid'}" th:field="*{surname}" />
+                    <th:block th:unless="${surnameError == null}">
+                        <div class="invalid-feedback" th:text="${surnameError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="email" class="col-sm-2 col-form-label">E-mail</label>
+                <div class="col-sm-4">
+                    <input id="email" class="form-control" th:classappend="${emailError == null ? '' : 'is-invalid'}" th:field="*{email}" />
+                    <th:block th:unless="${emailError == null}">
+                        <div class="invalid-feedback" th:text="${emailError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="password" class="col-sm-2 col-form-label">Пароль</label>
+                <div class="col-sm-4">
+                    <input type="password" name="password" id="password" class="form-control" th:classappend="${passwordError == null ? '' : 'is-invalid'}" th:field="*{password}" />
+                    <th:block th:unless="${passwordError == null}">
+                        <div class="invalid-feedback" th:text="${passwordError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="password2" class="col-sm-2 col-form-label">Повторите пароль</label>
+                <div class="col-sm-4">
+                    <input type="password" name="password2" id="password2" class="form-control" th:classappend="${password2Error == null ? '' : 'is-invalid'}" th:value="*{password2}" />
+                    <th:block th:unless="${password2Error == null}">
+                        <div class="invalid-feedback" th:text="${password2Error}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center pt-3 mt-3">
+                <div class="col-sm-4">
+
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Регистрация</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div th:replace="fragments/footer :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+$.get("http://localhost:8080/api/items/names", function(data){
+    console.log(data);
+    // use a data source with 'id' and 'name' keys
+    $("#query").typeahead({ source:data });
+},'json');
+</script>
+
+</body>
+</html>

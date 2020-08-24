@@ -1,0 +1,36 @@
+body {
+   background: #FFFFFF;
+   background: linear-gradient(to bottom, #FFFFFF, #C1C1C1);
+}
+
+section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.checked {
+    color: orange;
+}
+
+.typeahead {
+    width:100%;
+}
+
+ul.dropdown-menu {
+    margin-top:20px;
+}
+
+a.dropdown-item {
+    vertical-align: middle;
+    height:40px;
+}
+
+.form-control-borderless {
+    border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}

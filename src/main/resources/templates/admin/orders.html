@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
+
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/admin :: header">Header element</div>
+
+<!-- Page Content -->
+<section class="pb-5">
+    <div class="container">
+
+        <div class="text-center">
+            <div class="row">
+                <div class="col">
+                    <h6><i class="fa fa-lg fa-users" aria-hidden="true"></i> Список пользователей</h6>
+                </div>
+            </div>
+
+            <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+        </div>
+
+        <ul class="list-group list-group-flush" th:each="user : ${users}">
+            <li class="list-group-item">
+                <b>Логин:</b> <p th:text="${user.getUsername()}">text</p>
+                <b>Имя:</b> <p th:text="${user.getName()}">text</p>
+                <b>Фамилия:</b> <p th:text="${user.getSurname()}">text</p>
+                <b>Е-почта:</b> <p th:text="${user.getEmail()}">text</p>
+                <b>Активный магазин:</b> <p th:text="${user.getActiveShop()}">text</p>
+                <b>Роли:</b> <span th:each="role : ${user.getRoles()}"><p th:text="${role}">text</p></span>
+                <button type="button" class="btn btn-primary btn-sm">Удалить</button>
+            </li>
+        </ul>
+
+        <th:block th:unless="${users.size() > 0}">
+            <p class="font-weight-light text-center">Магазины не добавлены!</p>
+        </th:block>
+
+    </div>
+</section>
+
+<div th:replace="fragments/admin :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+</body>
+</html>

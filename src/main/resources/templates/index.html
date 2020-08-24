@@ -1,132 +1,94 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <th:block th:replace="fragments/external :: stylesheets">Stylesheets element</th:block>
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 </head>
+
 <body>
 
-    <div id="appcontainer">
-        <div class="px-3 py-3">
+<div th:replace="fragments/header :: login">Header element</div>
 
-            <div class="pos-f-t pb-3">
-                <div class="collapse" id="external">
-                    <div class="bg-dark p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <span class="text-muted">Toggleable via the navbar brand.</span>
-                    </div>
-                </div>
-                <nav class="navbar navbar-dark bg-dark">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#external" aria-controls="external" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <ul class="navbar-nav mr-auto ml-3 mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                </nav>
-            </div>
+<div th:replace="fragments/header :: search">Search element</div>
 
-            <div class="container mt-4 mb-5">
-                <div class="text-center">
-                    <div class="row">
-                        <div class="col"><h6><i class="fas fa-book-open"></i> Categories</h6></div>
-                    </div>
-                    <hr class="bg-dark mb-4 mt-2 d-inline-block mx-auto w-50">
-                </div>
+<!-- Page Content -->
+<section class="py-5 text-center">
+    <div class="container">
 
-                <div class="row justify-content-md-center">
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 1</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 2</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 3</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 4</p>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col"><h6><i class="fa fa-lg fa-fire" aria-hidden="true"></i> Разделы</h6></div>
+        </div>
+        <hr class="bg-dark mb-4 mt-2 d-inline-block mx-auto w-50">
+
+        <div class="row justify-content-md-center">
+
+            <th:block th:each="category : ${categories}">
+            <div class="col-sm-6 col-lg-4">
+                <div class="border border-dark bg-white rounded mb-3">
+                    <a th:href="@{${category.getLocalLink()}}">
+                        <img th:src="@{${category.getImageUrl()}}" class="rounded my-3" th:alt="${category.getName()}"
+                             style="height: 200px; width: 200px;" src="/attr"/>
+                    </a>
+                    <h6 th:text="${category.getName()} + ' (' + ${category.getItemCount()} + ')'">Ноутбуки</h6>
                 </div>
             </div>
+            </th:block>
 
-            <div class="container mt-4 mb-5">
-                <div class="text-center">
-                    <div class="row">
-                        <div class="col"><h6><i class="fas fa-book-open"></i> Last items</h6></div>
-                    </div>
-                    <hr class="bg-dark mb-4 mt-2 d-inline-block mx-auto w-50">
-                </div>
+        </div>
+    </div>
+</section>
 
-                <div class="row justify-content-md-center">
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 1</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 2</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 3</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-3">
-                        <div class="item-view text-center">
-                            <div class="d-flex align-items-center mb-3">
-                                <img th:src="@{/img/150.png}" class="rounded mx-auto d-block"/>
-                            </div>
-                            <p>Ed consectetur 4</p>
-                        </div>
-                    </div>
-                </div>
+<section class="main">
+    <div class="container">
+
+        <div class="text-center">
+            <div class="row">
+                <div class="col"><h6><i class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i> Последние отзывы</h6></div>
             </div>
-
-            <div th:replace="fragments/footer :: footer">Footer element</div>
+            <hr class="bg-dark mb-4 mt-2 d-inline-block mx-auto w-50">
         </div>
 
+        <div class="row">
+            <div class="col-sm-6 mb-3" th:each="review : ${reviews}">
+                <div class="card border-dark bg-white"> <!-- заменить -->
+                    <div class="card-body">
+                        <p class="card-title">Магазин: 1A</p>
+                        <p class="card-text" th:text="${review.getMessage()}">Отзыв 1</p>
+                        <div class="row no-gutters" style="margin-bottom:-20px">
+                            <div class="col align-bottom">
+                                <!--                                <div th:replace="fragments/stars :: temp">Temp stars element</div>-->
+                            </div>
+                            <div class="col text-right">
+                                <p th:text="${review.getAuthor().getName()}">Александр</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <th:block th:replace="fragments/external :: javascript">Javascript element</th:block>
+</section>
+
+<div th:replace="fragments/footer :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+$.get("http://localhost:8080/api/items/names", function(data){
+    console.log(data);
+    // use a data source with 'id' and 'name' keys
+    $("#query").typeahead({ source:data });
+},'json');
+</script>
+<script>
+    $.get("http://localhost:8080/api/items/names", function(data){
+        $("#query").typeahead({ source:data });
+    },'json');
+</script>
 
 </body>
 </html>

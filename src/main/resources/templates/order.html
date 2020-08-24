@@ -1,10 +1,186 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
+
+    <style>
+        .vl{
+            border:none;
+            border-left:5px solid hsla(200, 10%, 50%, 100);
+            height:20px;
+            margin-left:80px;
+        }
+    </style>
 </head>
+
 <body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/header :: search">Search element</div>
+
+<!-- Page Content -->
+<section class="main">
+    <div class="container text-center">
+
+        <div class="d-flex">
+            <div class="mr-auto p-2">
+                <h6><i class="fa fa-lg fa-shopping-cart" aria-hidden="true"></i> Магазин: 1A</h6>
+            </div>
+        </div>
+        <hr class="bg-dark mb-4 d-inline-block mx-auto w-50">
+        <div class="row justify-content-md-center">
+            <div class="col-4">
+                <p><i class="fa fa-info-circle"></i> <b>Информация</b></p>
+                <ul class="list-unstyled">
+                    <li>Адрес: Ул. Мукусалас, 41</li>
+                    <li>Телефон: 67428800</li>
+                    <li>Е-почта: info@1a.lv</li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <p><i class="fa fa-credit-card-alt"></i> <b>Способы оплаты</b></p>
+                <ul class="list-unstyled">
+                    <li>Наличными</li>
+                    <li>Перечислением</li>
+                    <li>Кредиткой</li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <p><i class="fa fa-car"></i> <b>Доставка</b></p>
+                <ul class="list-unstyled">
+                    <li>В офисе</li>
+                    <li>Пакоматы</li>
+                    <li>Курьерская служба</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row justify-content-center" th:if="${messageType != null}">
+            <div class="col-8">
+                <div class="alert" role="alert" th:classappend="${messageType}" th:text="${message}">
+                    Text message.
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <hr class="bg-dark mb-3 d-inline-block mx-auto w-50">
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="spoiler-toggle">
+                <button type="button" class="btn btn-dark my-3">
+                    <h6><i class="fa fa-plus" aria-hidden="true"></i> Написать отзыв</h6>
+                </button>
+            </div>
+        </div>
+
+        <div class="spoiler mb-4" style="display: none;">
+            <form th:action="@{/reviews}" method="post" th:object="${review}">
+                <div sec:authorize="!isAuthenticated()">
+                    <div class="form-group row justify-content-center">
+                        <label for="email" class="col-sm-2 col-form-label">E-mail</label>
+                        <div class="col-sm-4">
+                            <input id="email" class="form-control" th:classappend="${emailError == null ? '' : 'is-invalid'}" th:field="*{email}"/>
+                            <th:block th:unless="${emailError == null}">
+                                <div class="invalid-feedback" th:text="${emailError}"></div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <label for="message" class="col-sm-2 col-form-label">Сообщение</label>
+                    <div class="col-sm-4">
+                    <textarea id="message" class="form-control" th:classappend="${messageError == null ? '' : 'is-invalid'}"
+                              rows="5" th:field="*{message}"></textarea>
+                        <th:block th:unless="${messageError == null}">
+                            <div class="invalid-feedback" th:text="${messageError}"></div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center pt-3 mt-3">
+                    <div class="col-sm-4">
+                        <!--                    <div class="g-recaptcha" data-sitekey="6LczEMcUAAAAAAW5Xouslfk0lIdpJRB31Nj-YYF8"></div>-->
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <hr class="bg-dark my-3 d-inline-block mx-auto w-50">
+        </div>
+        <div class="d-flex">
+            <div class="p-2">
+                <h6 class="mb-4"><i class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i> Последние отзывы </h6>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <th:block th:if="${messages.size() > 0}" th:each="message : ${messages}">
+                <div class="col-12 mb-3">
+                    <div class="card border-dark bg-white"> <!-- заменить -->
+                        <div class="card-body">
+<!--                            <p class="card-title">Магазин: 1A</p>-->
+                            <p class="card-text" th:text="${message.getMessage()}">text</p>
+                            <div class="row no-gutters" style="margin-bottom:-20px">
+                                <div class="col align-bottom">
+                                    <p th:text="${message.getDate().toString()}">Some stars!</p>
+                                </div>
+                                <div class="col text-right">
+                                    <p th:unless="${message.getAuthor()} == null" th:text="${message.getAuthor().getName()}">Александр</p>
+                                    <p th:if="${message.getAuthor()} == null">Аноним</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+            <th:block th:unless="${messages.size() > 0}">
+                <div class="col-12 mb-3">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Ой!</strong> Отзывов по магазину не найдено.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</section>
+
+<div th:replace="fragments/footer :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+$(function(){
+    $('.spoiler-toggle').click(function(){
+        $('.spoiler').animate({height: 'toggle'});
+    }); // end spoiler-toggle
+}); // end document ready
+
+$.get("http://localhost:8080/api/items/names", function(data){
+    console.log(data);
+    // use a data source with 'id' and 'name' keys
+    $("#query").typeahead({ source:data });
+},'json');
+
+</script>
 
 </body>
 </html>

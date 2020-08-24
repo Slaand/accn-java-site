@@ -1,10 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dummy name: экономия твоего времени и денег!</title>
+
+    <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 </head>
+
 <body>
+
+<div th:replace="fragments/header :: login">Login element</div>
+
+<div th:replace="fragments/header :: search">Search element</div>
+
+<!-- Page Content -->
+<section class="py-5 text-center">
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-light">
+                    <h6><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i> Логин</h6>
+                </button>
+            </div>
+            <div class="col">
+                <a class="" th:href="@{/user/registration}">
+                    <button type="submit" class="btn btn-dark">
+                    <h6><i class="fa fa-lg fa-plus" aria-hidden="true"></i> Регистрация</h6>
+                    </button>
+                </a>
+            </div>
+        </div>
+        <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger" role="alert">
+                        Неверное имя пользователя или пароль.
+                    </div>
+                </div>
+                <div th:if="${param.logout}">
+                    <div class="alert alert-info" role="alert">
+                        Вы вышли из системы.
+                    </div>
+                </div>
+                <div th:unless="${message == null}">
+                    <div class="alert" role="alert" th:classappend="${messageType}" th:text="${message}">
+                        Просто сообщение при экшене
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-between mb-4">
+            <div class="col">
+                <h6>Введите ваш логин и пароль</h6>
+            </div>
+        </div>
+        <form th:action="@{/user/login}" method="post">
+            <div class="row justify-content-center">
+                <div class="col-2 text-left my-auto">
+                    Логин
+                </div>
+                <div class="col-4">
+                    <div class="form-group my-auto">
+                        <input type="text" name="username" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Force next columns to break to new line -->
+                <div class="w-100 my-1"></div>
+
+                <div class="col-2 text-left my-auto">
+                    Пароль
+                </div>
+                <div class="col-4">
+                    <div class="form-group my-auto">
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                </div>
+
+                <div class="w-100 my-3"></div> <!-- force move -->
+
+                <div class="col-4 my-auto">
+
+                </div>
+                <div class="col-2">
+                    <div class="my-auto"><input type="submit" class="btn btn-primary" value="Войти"/></div>
+                </div>
+            </div>
+        </form>
+
+        <hr class="mb-5 mt-5 d-inline-block mx-auto">
+    </div>
+</section>
+
+<div th:replace="fragments/footer :: footer">Footer element</div>
+
+<div th:replace="fragments/external :: javascript">Javascript element</div>
+
+<script>
+$.get("http://localhost:8080/api/items/names", function(data){
+    console.log(data);
+    // use a data source with 'id' and 'name' keys
+    $("#query").typeahead({ source:data });
+},'json');
+</script>
 
 </body>
 </html>
