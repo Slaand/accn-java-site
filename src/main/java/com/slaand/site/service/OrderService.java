@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,7 +31,8 @@ public class OrderService {
         if (user == null || order == null) {
             return false;
         }
-        OrderEntity orderEntity = OrderMapper.INSTANCE.orderDtoToOrderEntity(order, user);
+        Optional<ItemEntity> itemEntity = itemRepository.findById(order.getItemId());
+        OrderEntity orderEntity = OrderMapper.INSTANCE.orderDtoToOrderEntity(order, user, itemEntity.get());
         orderRepository.save(orderEntity);
         return true;
     }

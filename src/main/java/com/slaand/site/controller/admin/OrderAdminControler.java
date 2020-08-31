@@ -26,8 +26,8 @@ public class OrderAdminControler {
 
     private OrderAdminService orderAdminService;
 
-    private static final String ORDER_PAGE_PATH = "/admin/review";
-    private static final String ORDER_PAGE_REDIRECT_PATH = "redirect:/admin/review";
+    private static final String ORDER_PAGE_PATH = "/admin/orders";
+    private static final String ORDER_PAGE_REDIRECT_PATH = "redirect:/admin/orders";
 
     public OrderAdminControler(final OrderAdminService orderAdminService) {
         this.orderAdminService = orderAdminService;

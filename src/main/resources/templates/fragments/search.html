@@ -1,26 +1,7 @@
 <!-- Navigation -->
 <nav th:fragment="search" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="bg-dark text-center">
-        <div class="pt-3 pb-5"> <!-- Just to make background a little bigger -->
-            <p class="text-white">Ищете подходящий товар?</p>
-            <div class="row justify-content-center">
-                <div class="col-11 col-sm-9 col-md-8 col-md-7 col-xl-6">
-                    <form class="card" th:action="@{/search}" method="get">
-                        <div class="card-body row no-gutters align-items-center">
-                            <div class="col-auto"><i class="fa fa-search" aria-hidden="true"></i></div>
-                            <div class="col"><input class="form-control form-control-borderless typeahead" name="query"
-                                                    id="query" type="text" placeholder="Search..." data-provide="typeahead"
-                                                    autocomplete="off"></div>
-                            <div class="col-auto">
-                                <button class="btn btn-lg btn-success" type="submit">
-                                    Поиск
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <div class="pt-3 pb-5"></div>
     </div>
 </nav>
 <!-- Navigation -->

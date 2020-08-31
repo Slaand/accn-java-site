@@ -26,8 +26,8 @@ public class ProfileService {
         return entity.orElseThrow(NoSuchElementException::new);
     }
 
-    public List<OrderEntity> searchOrderList(final Long id) {
-        return orderRepository.findAllByUserId(id);
-    }
+//    public List<OrderEntity> searchOrderList(final Long id) {
+//        return orderRepository.findAllByUserId(id);
+//    }
 
 }

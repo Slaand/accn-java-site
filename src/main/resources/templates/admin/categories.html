@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Dummy name: экономия твоего времени и денег!</title>
+    <title>Dummy name</title>
 
     <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 
@@ -17,42 +17,68 @@
 <div th:replace="fragments/admin :: header">Header element</div>
 
 <!-- Page Content -->
-<section class="main">
+<section class="pb-5">
     <div class="container">
 
-        <div class="row text-center">
-            <div class="col-12">
-                <h6><i class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i> Список отзывов</h6>
-            </div>
-            <div class="col-12">
-                <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
-            </div>
-        </div>
+        <div id="accordion">
+            <th:block th:if="${toEdit != null}">
+                <div class="card bg-light border-dark">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="fa fa-lg fa-plus" aria-hidden="true"></i> Редактировать категорию
+                            </button>
+                        </h5>
+                    </div>
 
-        <div class="row">
-            <th:block th:if="${listReviews.size() > 0}" th:each="message : ${listReviews}">
-                <div class="col-12 mb-3">
-                    <div class="card border-dark bg-white"> <!-- заменить -->
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <!--                            <p class="card-title">Магазин: 1A</p>-->
-                            <p class="card-text" th:text="${message.getMessage()}">text</p>
-                            <div class="row no-gutters" style="margin-bottom:-20px">
-                                <div class="col-2 align-bottom">
-                                    <span><th:block th:text="${message.getDate().toString()}">Some stars! </th:block></span>
-                                </div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-primary btn-sm">Удалить</button>
-                                </div>
-                                <div class="col-8 text-right">
-                                    <p th:unless="${message.getAuthor()} == null" th:text="${message.getAuthor().getName()}">Александр</p>
-                                    <p th:if="${message.getAuthor()} == null">Аноним</p>
-                                </div>
-                            </div>
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                         </div>
                     </div>
                 </div>
             </th:block>
+
+            <div class="card bg-light border-dark">
+                <div class="card-header" id="headingThree">
+                    <h5 class="mb-0 text-center">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fa fa-lg fa-plus" aria-hidden="true"></i> Добавить категорию
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="text-center pt-5">
+            <div class="row">
+                <div class="col">
+                    <h6><i class="fas fa-cart-arrow-down"></i> Список категорий</h6>
+                </div>
+            </div>
+
+            <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+        </div>
+
+
+        <ul class="list-group list-group-flush" th:each="category : ${categories}">
+            <li class="list-group-item">
+                <b>Имя:</b> <p th:text="${shop.getName()}">text</p>
+                <b>Информация:</b> <span th:each="info : ${category.getInfo()}"><p th:text="${info}">text</p></span>
+                <b>Доставки:</b> <span th:each="delivery : ${category.getDelivery()}"><p th:text="${delivery}">text</p></span>
+                <b>Способы оплаты:</b> <span th:each="payment : ${category.getPayments()}"><p th:text="${payment}">text</p></span>
+                <button type="button" class="btn btn-primary btn-sm">Удалить</button>
+            </li>
+        </ul>
+
+        <th:block th:unless="${categories.size() > 0}">
+            <p class="font-weight-light text-center">Категории не добавлены!</p>
+        </th:block>
 
     </div>
 </section>

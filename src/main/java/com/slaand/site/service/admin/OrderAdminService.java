@@ -1,7 +1,9 @@
 package com.slaand.site.service.admin;
 
 import com.slaand.site.model.dto.OrderDto;
+import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.OrderEntity;
+import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.OrderRepository;
 import com.slaand.site.util.BootstrapUtils;
 import com.slaand.site.util.bootstrap.Alert;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,9 @@ public class OrderAdminService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     // admin panel functions
     public List<OrderEntity> retrieveLastTenOrderList() {
@@ -45,7 +51,9 @@ public class OrderAdminService {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
             return false;
         }
-        order.setItemId(orderDto.getItemId());
+        ItemEntity entity = itemRepository.findById(orderDto.getItemId())
+                .orElseThrow(NoSuchElementException::new); // todo mb nado budet popravitj
+        order.setItemId(entity);
         order.setAddress(orderDto.getAddress());
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Данные заказа обновлены успешно!");
         return true;

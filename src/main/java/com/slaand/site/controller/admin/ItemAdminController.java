@@ -33,7 +33,7 @@ public class ItemAdminController {
         this.itemAdminService = itemAdminService;
     }
     
-    @GetMapping("/item")
+    @GetMapping("/items")
     public String listItems(Model model) {
         final List<ItemEntity> items = itemAdminService.retrieveLastTenItemList();
         model.addAttribute("items", Objects.requireNonNullElse(items, Collections.emptyList()));
@@ -41,7 +41,7 @@ public class ItemAdminController {
         return ITEM_PAGE_PATH;
     }
 
-    @GetMapping("/item/{id}/delete")
+    @GetMapping("/items/{id}/delete")
     public String deleteItem(@RequestParam Long id, Model model) {
         boolean isValid = itemAdminService.deleteItem(id, model);
         if (!isValid) {
@@ -50,7 +50,7 @@ public class ItemAdminController {
         return ITEM_PAGE_REDIRECT_PATH;
     }
 
-    @GetMapping("/item/{id}/edit")
+    @GetMapping("/items/{id}/edit")
     public String editItem(@RequestParam Long id, Model model) {
         Optional<ItemEntity> item = itemAdminService.retrieveSelectedItem(id);
         final List<ItemEntity> items = itemAdminService.retrieveLastTenItemList();
@@ -59,7 +59,7 @@ public class ItemAdminController {
         return ITEM_PAGE_PATH;
     }
 
-    @PostMapping("/item/{id}/create")
+    @PostMapping("/items/{id}/create")
     public String createItem(@Valid ItemDto toEdit, @RequestParam Long id, Model model) {
         boolean isValid = itemAdminService.createItem(toEdit, model);
         if (!isValid) {
@@ -68,7 +68,7 @@ public class ItemAdminController {
         return ITEM_PAGE_REDIRECT_PATH;
     }
 
-    @PostMapping("/item/{id}/edit")
+    @PostMapping("/items/{id}/edit")
     public String confirmItemEdit(@Valid ItemDto toEdit, @RequestParam Long id, Model model) {
         boolean isValid = itemAdminService.updateItem(toEdit, id, model);
         if (!isValid) {

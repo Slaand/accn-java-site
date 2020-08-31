@@ -26,6 +26,7 @@ spring:
     username: root
     password:
     url: jdbc:mysql://127.0.0.1:3307/spring?useUnicode=true&characterEncoding=UTF-8&createDatabaseIfNotExist=true
+    locations: classpath:/db/migration,classpath:/db/data
   data:
     redis:
       repositories:

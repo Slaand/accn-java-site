@@ -34,7 +34,7 @@ public class RegisterController {
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return "redirect:/"; //view
         } else {
-            model.addAttribute("user", UserEntity.builder().build());
+            model.addAttribute("user", UserDto.builder().build());
             return "/user/register"; //view
         }
     }

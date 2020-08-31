@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Dummy name: экономия твоего времени и денег!</title>
+    <title>Dummy name</title>
 
     <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 
@@ -14,7 +14,7 @@
 
 <div th:replace="fragments/header :: login">Login element</div>
 
-<div th:replace="fragments/header :: search">Search element</div>
+<div th:replace="fragments/header :: row">Row element</div>
 
 <!-- Page Content -->
 <section class="py-5 text-center">
@@ -76,14 +76,6 @@
 <div th:replace="fragments/footer :: footer">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
-
-<script>
-    $.get("http://localhost:8080/api/items/names", function (data) {
-        console.log(data);
-        // use a data source with 'id' and 'name' keys
-        $("#query").typeahead({source: data});
-    }, 'json');
-</script>
 
 </body>
 </html>

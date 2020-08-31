@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,9 +26,11 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class UserService implements UserDetailsService {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
 
             model.mergeAttributes(errors);
-            return "/user/registration";
+            return "/user/register";
         }
 
         if(!StringUtils.equals(accountDto.getPassword(), accountDto.getPassword2())) {
@@ -60,7 +63,7 @@ public class UserService implements UserDetailsService {
             BootstrapUtils.setAlertModel(model, Alert.WARNING, "Account exists!");
         }
 
-        UserEntity user = UserMapper.INSTANCE.userDtoToUserEntity(accountDto);
+        UserEntity user = UserMapper.INSTANCE.userDtoToUserEntity(accountDto, passwordEncoder);
         userRepository.save(user);
 
         return "redirect:/user/login";

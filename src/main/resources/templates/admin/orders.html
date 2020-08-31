@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Dummy name: экономия твоего времени и денег!</title>
+    <title>Dummy name</title>
 
     <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 
@@ -23,14 +23,14 @@
         <div class="text-center">
             <div class="row">
                 <div class="col">
-                    <h6><i class="fa fa-lg fa-users" aria-hidden="true"></i> Список пользователей</h6>
+                    <h6><i class="fas fa-cart-arrow-down"></i> Список заказов</h6>
                 </div>
             </div>
 
             <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
         </div>
 
-        <ul class="list-group list-group-flush" th:each="user : ${users}">
+        <ul class="list-group list-group-flush" th:each="order : ${orders}">
             <li class="list-group-item">
                 <b>Логин:</b> <p th:text="${user.getUsername()}">text</p>
                 <b>Имя:</b> <p th:text="${user.getName()}">text</p>
@@ -42,7 +42,7 @@
             </li>
         </ul>
 
-        <th:block th:unless="${users.size() > 0}">
+        <th:block th:unless="${orders.size() > 0}">
             <p class="font-weight-light text-center">Магазины не добавлены!</p>
         </th:block>
 

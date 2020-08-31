@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Dummy name: экономия твоего времени и денег!</title>
+    <title>Dummy name</title>
 
     <div th:replace="fragments/external :: stylesheets">Stylesheets element</div>
 </head>
@@ -13,7 +13,7 @@
 
 <div th:replace="fragments/header :: login">Login element</div>
 
-<div th:replace="fragments/header :: search">Search element</div>
+<div th:replace="fragments/header :: row">Row element</div>
 
 <!-- Page Content -->
 <section class="py-5 text-center">
@@ -22,13 +22,13 @@
         <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-light">
-                    <h6><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i> Логин</h6>
+                    <h6><i class="fas fa-sign-out-alt"></i> Логин</h6>
                 </button>
             </div>
             <div class="col">
-                <a class="" th:href="@{/user/registration}">
+                <a class="" th:href="@{/user/register}">
                     <button type="submit" class="btn btn-dark">
-                    <h6><i class="fa fa-lg fa-plus" aria-hidden="true"></i> Регистрация</h6>
+                    <h6><i class="fas fa-plus-square"></i> Регистрация</h6>
                     </button>
                 </a>
             </div>
@@ -100,14 +100,6 @@
 <div th:replace="fragments/footer :: footer">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
-
-<script>
-$.get("http://localhost:8080/api/items/names", function(data){
-    console.log(data);
-    // use a data source with 'id' and 'name' keys
-    $("#query").typeahead({ source:data });
-},'json');
-</script>
 
 </body>
 </html>

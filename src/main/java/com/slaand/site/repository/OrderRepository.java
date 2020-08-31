@@ -11,6 +11,6 @@ public interface OrderRepository extends CrudRepository<OrderEntity, Long> {
 
     List<OrderEntity> findTop10ByOrderByIdDesc();
 
-    List<OrderEntity> findAllByUserId(Long email);
+//    List<OrderEntity> findAllByUserId(Long email);
 
 }

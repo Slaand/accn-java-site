@@ -25,16 +25,16 @@ public class ProfileController {
     private ProfileService profileService;
 
     @GetMapping("/profile")
-    public String registration(Model model) {
+    public String getUserProfile(Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             UserEntity entity = profileService.searchUserByEmail(userDetails.getUsername());
-            List<OrderEntity> orderList = profileService.searchOrderList(entity.getId());
+//            List<OrderEntity> orderList = profileService.searchOrderList(entity.getId());
             model.addAttribute("user", entity);
-            model.addAttribute("orders", orderList);
-            return "/user/register";
+            model.addAttribute("orders", entity.getOrders());
+            return "/user/profile";
         } else {
             return "redirect:/";
         }

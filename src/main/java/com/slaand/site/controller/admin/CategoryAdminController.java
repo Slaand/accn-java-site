@@ -33,7 +33,7 @@ public class CategoryAdminController {
         this.categoryAdminService = categoryAdminService;
     }
 
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public String listCategories(Model model) {
         final List<CategoryEntity> categories = categoryAdminService.retrieveLastTwelveCategoryList();
         model.addAttribute("categories", Objects.requireNonNullElse(categories, Collections.emptyList()));
@@ -41,7 +41,7 @@ public class CategoryAdminController {
         return CATEGORY_PAGE_PATH;
     }
 
-    @GetMapping("/category/{id}/delete")
+    @GetMapping("/categories/{id}/delete")
     public String deleteReview(@RequestParam Long id, Model model) {
         boolean isValid = categoryAdminService.deleteCategory(id, model);
         if (!isValid) {
@@ -50,7 +50,7 @@ public class CategoryAdminController {
         return CATEGORY_PAGE_REDIRECT_PATH;
     }
 
-    @GetMapping("/category/{id}/edit")
+    @GetMapping("/categories/{id}/edit")
     public String editReview(@RequestParam Long id, Model model) {
         Optional<CategoryEntity> category = categoryAdminService.retrieveSelectedCategory(id);
         final List<CategoryEntity> categories = categoryAdminService.retrieveLastTwelveCategoryList();
@@ -59,7 +59,7 @@ public class CategoryAdminController {
         return CATEGORY_PAGE_PATH;
     }
 
-    @PostMapping("/category/create")
+    @PostMapping("/categories/create")
     public String createCategory(@Valid CategoryDto toEdit, Model model) {
         boolean isValid = categoryAdminService.createCategory(toEdit, model);
         if (!isValid) {
@@ -68,7 +68,7 @@ public class CategoryAdminController {
         return CATEGORY_PAGE_REDIRECT_PATH;
     }
 
-    @PostMapping("/category/{id}/edit")
+    @PostMapping("/categories/{id}/edit")
     public String confirmCategoryEdit(@Valid CategoryDto toEdit, @RequestParam Long id, Model model) {
         boolean isValid = categoryAdminService.updateCategory(toEdit, id, model);
         if (!isValid) {

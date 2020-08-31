@@ -1,19 +1,25 @@
 <!-- Navigation -->
 <nav th:fragment="login" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="container">
-        <div class="d-flex bd-highlight mt-2">
-            <div class="p-2 flex-grow-1 bd-highlight">
-                <p class="text-dark"><a th:href="@{/}" class="text-dark">Главная</a></p>
+
+        <div class="d-flex bd-highlight my-3">
+            <div class="mr-auto p-2 bd-highlight">
+                <a th:href="@{/}" class="text-dark">Главная</a>
+            </div>
+            <div class="mr-auto p-2 bd-highlight">
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/admin}" class="text-dark">Админ панель</a>
+                </div>
             </div>
             <div class="p-2 bd-highlight">
                 <div sec:authorize="isAuthenticated()">
-                    Привет: <a th:href="@{/user/profile}"><span sec:authentication="name">Dummy</span></a>
+                    <a th:href="@{/user/profile}"><span sec:authentication="name">Dummy</span></a> |
                 </div>
             </div>
             <div class="p-2 bd-highlight">
                 <div sec:authorize="isAuthenticated()">
                     <a href="javascript: document.logoutForm.submit()" class="brand-logo right" role="menuitem">
-                        <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Выход
+                        <i class="fas fa-sign-out-alt"></i>&nbsp;Выход
                     </a>
                     <form name="logoutForm" th:action="@{/user/logout}" method="post" th:hidden="true">
                         <input hidden type="submit" value="Sign Out"/>
@@ -22,36 +28,18 @@
 
                 <div sec:authorize="isAnonymous()">
                     <a href="/user/login" th:href="@{/user/login}">
-                        <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Логин
+                        <i class="fas fa-sign-in-alt"></i>&nbsp;Логин
                     </a>
                 </div>
             </div>
         </div>
+
     </div>
 </nav>
 <!-- Navigation -->
 
 <!-- Search -->
-<th:block th:fragment="search" xmlns:th="http://www.w3.org/1999/xhtml">
-    <div class="bg-dark text-center py-5"> <!-- Just to make background a little bigger -->
-        <p class="text-white">Ищете подходящий товар?</p>
-        <div class="row justify-content-center no-gutters pb-3">
-            <div class="col-11 col-sm-9 col-md-8 col-md-7 col-xl-6">
-                <form class="card" th:action="@{/search}" method="get">
-                    <div class="card-body row no-gutters align-items-center">
-                        <div class="col-auto"><i class="fa fa-search" aria-hidden="true"></i></div>
-                        <div class="col"><input class="form-control form-control-borderless typeahead"
-                                                name="query" id="query" type="text" placeholder="Поиск..."
-                                                data-provide="typeahead" autocomplete="off"></div>
-                        <div class="col-auto">
-                            <button class="btn btn-lg btn-success" type="submit">
-                                Поиск
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<th:block th:fragment="row" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="bg-dark text-center py-5"> <!-- Just to make background a little bigger --> </div>
 </th:block>
 <!-- Search -->
