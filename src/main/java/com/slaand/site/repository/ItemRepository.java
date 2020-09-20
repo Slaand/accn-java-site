@@ -11,6 +11,8 @@ public interface ItemRepository extends CrudRepository<ItemEntity, Long> {
 
     List<ItemEntity> findTop6ByOrderByIdDesc();
 
+    List<ItemEntity> findTop12ByOrderByIdDesc();
+
     List<ItemEntity> findAllByCategoryId(final Long id);
 
 }

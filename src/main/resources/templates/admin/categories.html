@@ -21,35 +21,77 @@
     <div class="container">
 
         <div id="accordion">
-            <th:block th:if="${toEdit != null}">
-                <div class="card bg-light border-dark">
-                    <div class="card-header" id="headingOne">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <i class="fa fa-lg fa-plus" aria-hidden="true"></i> Редактировать категорию
-                            </button>
-                        </h5>
-                    </div>
-
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                    </div>
-                </div>
-            </th:block>
-
             <div class="card bg-light border-dark">
                 <div class="card-header" id="headingThree">
                     <h5 class="mb-0 text-center">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <i class="fa fa-lg fa-plus" aria-hidden="true"></i> Добавить категорию
-                        </button>
+                        <th:block th:unless="${categoryDto.id == null}">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                <i class="fa fa-lg fa-plus" aria-hidden="true"></i> Редактировать категорию
+                            </button>
+                        </th:block>
+                        <th:block th:if="${categoryDto.id == null}">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <i class="fa fa-lg fa-plus" aria-hidden="true"></i> Добавить категорию
+                            </button>
+                        </th:block>
                     </h5>
                 </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+
+                <div id="collapseThree" class="collapse" th:classappend="${categoryDto.id == null ? '' : 'show'}"
+                     aria-labelledby="headingThree" data-parent="#accordion">
+
                     <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+                        <!-- New category form -->
+                        <form th:action="${categoryDto.id} == null ? @{/admin/categories/create} : @{/admin/categories/edit}"
+                              method="post" enctype="multipart/form-data" th:object="${categoryDto}">
+
+                            <input name="id" type="hidden"  th:field="*{id}" th:value="${id}" />
+
+                            <div class="form-group row justify-content-center">
+                                <label for="name" class="col-sm-2 col-form-label">Наименование</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="name" class="form-control" th:classappend="${nameError == null ? '' : 'is-invalid'}"
+                                           th:field="*{name}" th:value="${name}" />
+
+                                    <th:block th:unless="${nameError == null}">
+                                        <div class="invalid-feedback" th:text="${nameError}"></div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label th:for="isHidden" class="col-sm-2 col-form-label">Скрыт</label>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" id="isHidden" class="form-control" th:classappend="${isHiddenError == null ? '' : 'is-invalid'}"
+                                           th:field="*{isHidden}" th:value="${isHidden}" />
+
+                                    <th:block th:unless="${isHiddenError == null}">
+                                        <div class="invalid-feedback" th:text="${isHiddenError}"></div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label th:for="image" class="col-sm-2 col-form-label">Изображение</label>
+                                <div class="col-sm-4">
+                                    <input type="file" name="file" id="image"/>
+<!--                                    <input type="file" enctype="multipart/form-data" id="image" class="form-control" th:classappend="${imageError == null ? '' : 'is-invalid'}" th:field="*{image}" />-->
+                                    <th:block th:unless="${imageError == null}">
+                                        <div class="invalid-feedback" th:text="${imageError}"></div>
+                                    </th:block>
+                                </div>
+                            </div>
+
+                            <div class="form-group row justify-content-center pt-3 mt-3">
+                                <div class="col-sm-4">
+
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- End new category form -->
+
                     </div>
                 </div>
             </div>
@@ -68,11 +110,23 @@
 
         <ul class="list-group list-group-flush" th:each="category : ${categories}">
             <li class="list-group-item">
-                <b>Имя:</b> <p th:text="${shop.getName()}">text</p>
-                <b>Информация:</b> <span th:each="info : ${category.getInfo()}"><p th:text="${info}">text</p></span>
-                <b>Доставки:</b> <span th:each="delivery : ${category.getDelivery()}"><p th:text="${delivery}">text</p></span>
-                <b>Способы оплаты:</b> <span th:each="payment : ${category.getPayments()}"><p th:text="${payment}">text</p></span>
-                <button type="button" class="btn btn-primary btn-sm">Удалить</button>
+                <div class="row">
+                    <div class="col-1">
+<!--                        <img th:src="@{/resources/images/Picture.png}" />-->
+                        <img th:src="|data:image/jpeg;base64,${category.image.base64}|" style="width: 50px; height: 50px;"/>
+<!--                        <b>Раздел:</b> <th:block th:text="${category.name}">text</th:block>-->
+                    </div>
+                    <div class="col-6">
+                        <b>Раздел:</b> <th:block th:text="${category.name}">text</th:block>
+                    </div>
+                    <div class="col-2">
+                        <b>Скрыт:</b> <th:block th:text="${category.isHidden} ? 'yes' : 'no'">text</th:block>
+                    </div>
+                    <div class="col-3">
+                        <a href="#" th:href="@{/admin/categories/{id}/delete(id=${category.id})}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Удалить</a>
+                        <a href="#" th:href="@{/admin/categories/{id}/edit(id=${category.id})}" class="btn btn-primary btn-sm" role="button" aria-pressed="true">Редактировать</a>
+                    </div>
+                </div>
             </li>
         </ul>
 

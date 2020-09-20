@@ -1,4 +1,4 @@
-package com.slaand.site.annotations;
+package com.slaand.site.annotation;
 
 import com.slaand.site.config.RedisConfig;
 import org.springframework.context.annotation.Import;

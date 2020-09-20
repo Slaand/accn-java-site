@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +17,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,5 +48,22 @@ public class ItemEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private CategoryEntity categoryId;
+
+    @OneToMany(
+            mappedBy = "itemId",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ImageItemEntity> image = new ArrayList<>();
+
+    public void addImage(ImageItemEntity imageItemEntity) {
+        image.add(imageItemEntity);
+        imageItemEntity.setItemId(this);
+    }
+
+    public void removeImage(ImageItemEntity imageItemEntity) {
+        image.remove(imageItemEntity);
+        imageItemEntity.setItemId(null);
+    }
 
 }
