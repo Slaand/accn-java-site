@@ -1,33 +1,41 @@
 package com.slaand.site.service.user;
 
-import com.slaand.site.model.entity.OrderEntity;
+import com.slaand.site.exception.ResourceNotFoundException;
 import com.slaand.site.model.entity.UserEntity;
-import com.slaand.site.repository.OrderRepository;
 import com.slaand.site.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import org.springframework.ui.Model;
 
 @Service
 public class ProfileService {
 
     private UserRepository userRepository;
-    private OrderRepository orderRepository;
 
-    public ProfileService(final UserRepository userRepository, final OrderRepository orderRepository) {
+    public ProfileService(final UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
     }
 
     public UserEntity searchUserByEmail(final String email) {
-        Optional<UserEntity> entity = userRepository.findByEmail(email);
-        return entity.orElseThrow(NoSuchElementException::new);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Not found!"));
     }
 
-//    public List<OrderEntity> searchOrderList(final Long id) {
-//        return orderRepository.findAllByUserId(id);
-//    }
+    public String executeProfile(final Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            UserEntity entity = searchUserByEmail(userDetails.getUsername());
+            model.addAttribute("user", entity);
+            model.addAttribute("orders", entity.getOrders());
+            return "/user/profile";
+        } else {
+            return "redirect:/";
+        }
+    }
 
 }

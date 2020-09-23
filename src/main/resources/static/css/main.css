@@ -1,4 +1,13 @@
+
+html, body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
   background: #FFFFFF;
   background: linear-gradient(to bottom, #FFFFFF, #C1C1C1);
 }
@@ -6,43 +15,4 @@ body {
 section {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.checked {
-  color: orange;
-}
-
-.typeahead {
-  width:100%;
-}
-
-ul.dropdown-menu {
-  margin-top:20px;
-}
-
-a.dropdown-item {
-  vertical-align: middle;
-  height:40px;
-}
-
-.form-control-borderless {
-  border: none;
-}
-
-.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
-  border: none;
-  outline: none;
-  box-shadow: none;
-}
-
-#header {
-  height: 55px;
-}
-
-#footer {
-  height: 135px;
-}
-
-#bottom {
-  min-height: calc(100vh - 190px);
 }

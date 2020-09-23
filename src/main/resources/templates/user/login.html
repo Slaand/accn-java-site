@@ -19,6 +19,7 @@
 <section class="py-5 text-center">
     <div class="container">
 
+        <!-- Login block start -->
         <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-light">
@@ -28,7 +29,7 @@
             <div class="col">
                 <a class="" th:href="@{/user/register}">
                     <button type="submit" class="btn btn-dark">
-                    <h6><i class="fas fa-plus-square"></i> Регистрация</h6>
+                        <h6><i class="fas fa-plus-square"></i> Регистрация</h6>
                     </button>
                 </a>
             </div>
@@ -92,12 +93,11 @@
                 </div>
             </div>
         </form>
+        <!-- Login block end -->
 
         <hr class="mb-5 mt-5 d-inline-block mx-auto">
     </div>
 </section>
-
-<div th:replace="fragments/footer :: footer">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
 

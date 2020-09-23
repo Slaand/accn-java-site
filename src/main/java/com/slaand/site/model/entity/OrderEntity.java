@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,8 +47,10 @@ public class OrderEntity {
     @JoinColumn(name = "item_id")
     private ItemEntity itemId;
 
+//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private ZonedDateTime created;
 
+//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private ZonedDateTime updated;
 
     @Enumerated(EnumType.STRING)

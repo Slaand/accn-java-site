@@ -15,10 +15,10 @@
 
 <div th:replace="fragments/header :: row">Row element</div>
 
-<!-- Page Content -->
 <section class="py-5 text-center">
     <div class="container">
 
+        <!-- Section block start -->
         <div class="row">
             <div class="col"><h6><i class="fa fa-lg fa-fire" aria-hidden="true"></i> Разделы</h6></div>
         </div>
@@ -27,24 +27,21 @@
         <div class="row justify-content-md-center">
 
             <th:block th:each="category : ${categories}">
-            <div class="col-sm-6 col-lg-4">
-                <div class="border border-dark bg-white rounded mb-3">
-                    <a th:href="@{${category.getLocalLink()}}">
-                        <img th:src="@{${category.getImageUrl()}}" class="rounded my-3" th:alt="${category.getName()}"
-                             style="height: 200px; width: 200px;" src="/attr"/>
-                    </a>
-                    <h6 th:text="${category.getName()} + ' (' + ${category.getItemCount()} + ')'">Ноутбуки</h6>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="border border-dark bg-white rounded mb-3">
+                        <a href="#" th:href="@{/category/{id}(id=${category.id})}">
+                            <img th:src="|data:image/jpeg;base64,${category.image.base64}|" class="my-5"
+                                 th:alt="${category.name}" style="width: 150px; height: 150px;"/>
+                            <h6 th:text="${category.name}">text</h6>
+                        </a>
+                    </div>
                 </div>
-            </div>
             </th:block>
 
         </div>
-    </div>
-</section>
+        <!-- Section block end -->
 
-<section class="main">
-    <div class="container">
-
+        <!-- Item block start -->
         <div class="text-center">
             <div class="row">
                 <div class="col"><h6><i class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i> Последние товары</h6></div>
@@ -52,28 +49,26 @@
             <hr class="bg-dark mb-4 mt-2 d-inline-block mx-auto w-50">
         </div>
 
-        <div class="row">
-            <div class="col-sm-6 mb-3" th:each="review : ${reviews}">
-                <div class="card border-dark bg-white"> <!-- заменить -->
-                    <div class="card-body">
-                        <p class="card-title">Магазин: 1A</p>
-                        <p class="card-text" th:text="${review.getMessage()}">Отзыв 1</p>
-                        <div class="row no-gutters" style="margin-bottom:-20px">
-                            <div class="col align-bottom">
-                                <!--                                <div th:replace="fragments/stars :: temp">Temp stars element</div>-->
-                            </div>
-                            <div class="col text-right">
-                                <p th:text="${review.getAuthor().getName()}">Александр</p>
-                            </div>
-                        </div>
+        <div class="row justify-content-md-center">
+
+            <th:block th:each="item : ${items}">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="border border-dark bg-white rounded mb-3">
+                        <a href="#" th:href="@{/item/{id}(id=${item.id})}">
+                            <img th:src="|data:image/jpeg;base64,${item.image[0].base64}|" class="my-5"
+                                 th:alt="${item.name}" style="width: 150px; height: 150px;"/>
+                            <h6 th:text="${item.name}">text</h6>
+                        </a>
+                        <p class="text-danger mb-2" th:text="${item.price} + ' €'">123,45 €</p>
                     </div>
                 </div>
-            </div>
+            </th:block>
+
         </div>
+        <!-- Item block end -->
+
     </div>
 </section>
-
-<div th:replace="fragments/footer :: footer">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
 

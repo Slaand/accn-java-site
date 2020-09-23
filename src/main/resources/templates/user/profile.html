@@ -19,7 +19,7 @@
 <section class="py-5">
     <div class="container">
 
-
+        <!-- Profile block start -->
         <div class="row text-center">
             <div class="col-12">
                 <h6><i class="fa fa-lg fa-list" aria-hidden="true"></i> Профиль пользователя</h6>
@@ -30,8 +30,7 @@
         </div>
 
         <div sec:authorize="!isAuthenticated()">
-            <p class="text-center">Пользователь не найден! Необходимо провести <a
-                    th:href="@{/user/login}">авторизацию</a></p>
+            <p class="text-center">Пользователь не найден! Необходимо провести <a href="#" th:href="@{/user/login}">авторизацию</a></p>
         </div>
         <div sec:authorize="isAuthenticated()">
             <th:block th:object="${user}">
@@ -79,66 +78,35 @@
             </div>
         </div>
 
-        <div class="row">
-            <th:block th:if="${orders.size() > 0}" th:each="order : ${orders}">
-                <div class="col-12 mb-3">
-                    <div class="card border-dark bg-white"> <!-- заменить -->
-                        <div class="card-body">
-<!--                            <p class="card-text" th:text="${message.getMessage()}">text</p>-->
-<!--                            <div class="row no-gutters" style="margin-bottom:-20px">-->
-<!--                                <div class="col-2 align-bottom">-->
-<!--                                    <span><th:block th:text="${message.getDate().toString()}">Some stars! </th:block></span>-->
-<!--                                </div>-->
-<!--                                <div class="col-2">-->
-<!--                                    <button type="button" class="btn btn-primary btn-sm">Ответить</button>-->
-<!--                                </div>-->
-<!--                                <div class="col-8 text-right">-->
-<!--                                    <p th:unless="${message.getAuthor()} == null"-->
-<!--                                       th:text="${message.getAuthor().getName()}">Александр</p>-->
-<!--                                    <p th:if="${message.getAuthor()} == null">Аноним</p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-                        </div>
+        <ul class="list-group list-group-flush" th:each="order : ${orders}">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-1">
+                        <b><th:block th:text="${order.id}">text</th:block></b>
+                    </div>
+                    <div class="col-4">
+                        <b>Куплено:</b> <th:block th:text="${order.itemId.name}">text</th:block><br>
+                        <b>Адрес доставки:</b> <th:block th:text="${order.address}">text</th:block>
+                    </div>
+                    <div class="col-2">
+                        <b>Статус:</b> <th:block th:text="${order.status}">text</th:block>
+                    </div>
+                    <div class="col-1">
+                        <b>Цена:</b> <th:block th:text="${order.itemId.price}">text</th:block>
+                    </div>
+                    <div class="col-2">
+                        <b>Создано:</b> <th:block th:text="${#temporals.format(order.created, 'dd-MM-yyyy HH:mm:ss')}">text</th:block>
+                    </div>
+                    <div class="col-2">
+                        <b>Обновлено:</b> <th:block th:text="${#temporals.format(order.updated, 'dd-MM-yyyy HH:mm:ss')}">text</th:block>
                     </div>
                 </div>
-            </th:block>
-        </div>
-
-        <!--        <div class="spoiler mb-4" style="display: none;">-->
-<!--        <div class="spoiler mb-4">-->
-<!--            <form th:action="@{/user/panel}" method="post" th:object="${review}">-->
-<!--                <div class="form-group row justify-content-center">-->
-<!--                    <label for="shopResponse" class="col-sm-2 col-form-label">Сообщение</label>-->
-<!--                    <div class="col-sm-4">-->
-<!--                    <textarea id="shopResponse" class="form-control"-->
-<!--                              th:classappend="${shopResponseError == null ? '' : 'is-invalid'}" rows="5"-->
-<!--                              th:field="*{shopResponse}"></textarea>-->
-<!--                        <th:block th:unless="${shopResponseError == null}">-->
-<!--                            <div class="invalid-feedback" th:text="${shopResponseError}"></div>-->
-<!--                        </th:block>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="form-group row justify-content-center pt-3 mt-3">-->
-<!--                    <div class="col-sm-4">-->
-
-<!--                    </div>-->
-<!--                    <div class="col-sm-2">-->
-<!--                        <button type="submit" class="btn btn-primary">Отправить</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </form>-->
-
-<!--            <div class="row text-center">-->
-<!--                <div class="col-12">-->
-<!--                    <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+            </li>
+        </ul>
+        <!-- Profile block end -->
 
     </div>
 </section>
-
-<div th:replace="fragments/footer :: footer">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
 

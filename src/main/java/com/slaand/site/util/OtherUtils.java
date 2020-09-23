@@ -5,12 +5,20 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Random;
+import java.time.format.DateTimeFormatter;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public class OtherUtils {
+
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+
+    public static String getFormattedTime(String time) {
+        return DATE_TIME_FORMATTER.format(DATE_TIME_FORMATTER.parse(time));
+    }
 
     @SneakyThrows
     public static String getBase64FromImageFile(MultipartFile file) {

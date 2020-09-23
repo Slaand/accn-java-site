@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
@@ -16,11 +17,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/category/{id}")
-    public String loadCategory(@RequestParam Long id, Model model) {
-        if(id == null) {
-            log.debug("Error while loading category. Category id: {} and Model: {}", id, model);
-        }
-        model.addAttribute("category", categoryService.getItemsByCategoryId(id));
-        return "index"; //view
+    public String loadCategory(@PathVariable Long id, Model model) {
+        return categoryService.executeOrder(id, model);
     }
 }

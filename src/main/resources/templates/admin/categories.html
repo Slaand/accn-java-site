@@ -74,7 +74,7 @@
                                 <label th:for="image" class="col-sm-2 col-form-label">Изображение</label>
                                 <div class="col-sm-4">
                                     <input type="file" name="file" id="image"/>
-<!--                                    <input type="file" enctype="multipart/form-data" id="image" class="form-control" th:classappend="${imageError == null ? '' : 'is-invalid'}" th:field="*{image}" />-->
+                                    <!--                                    <input type="file" enctype="multipart/form-data" id="image" class="form-control" th:classappend="${imageError == null ? '' : 'is-invalid'}" th:field="*{image}" />-->
                                     <th:block th:unless="${imageError == null}">
                                         <div class="invalid-feedback" th:text="${imageError}"></div>
                                     </th:block>
@@ -112,9 +112,9 @@
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-1">
-<!--                        <img th:src="@{/resources/images/Picture.png}" />-->
+                        <!--                        <img th:src="@{/resources/images/Picture.png}" />-->
                         <img th:src="|data:image/jpeg;base64,${category.image.base64}|" style="width: 50px; height: 50px;"/>
-<!--                        <b>Раздел:</b> <th:block th:text="${category.name}">text</th:block>-->
+                        <!--                        <b>Раздел:</b> <th:block th:text="${category.name}">text</th:block>-->
                     </div>
                     <div class="col-6">
                         <b>Раздел:</b> <th:block th:text="${category.name}">text</th:block>
@@ -137,7 +137,7 @@
     </div>
 </section>
 
-<div th:replace="fragments/admin :: footer">Footer element</div>
+<div th:replace="fragments/admin :: footer" id="full">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
 

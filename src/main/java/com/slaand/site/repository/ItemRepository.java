@@ -1,5 +1,6 @@
 package com.slaand.site.repository;
 
+import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ItemEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,6 @@ public interface ItemRepository extends CrudRepository<ItemEntity, Long> {
 
     List<ItemEntity> findTop12ByOrderByIdDesc();
 
-    List<ItemEntity> findAllByCategoryId(final Long id);
+    List<ItemEntity> findAllByCategoryId(final CategoryEntity id);
 
 }

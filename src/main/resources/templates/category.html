@@ -16,64 +16,36 @@
 
 <div th:replace="fragments/header :: row">Row element</div>
 
-<!-- Page Content -->
 <section class="py-5 text-center">
     <div class="container">
 
+        <!-- Category block start -->
         <div class="row">
             <div class="col"><h6><i class="fa fa-lg  fa-list" aria-hidden="true"></i> Сравнения</h6></div>
         </div>
         <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
 
+
         <div class="row justify-content-md-center">
 
-            <!-- start -->
-            <th:block th:each="product : ${products}">
-                <div class="col">
+            <th:block th:each="item : ${itemPage}">
+                <div class="col-sm-6 col-lg-4 col-xl-3">
                     <div class="border border-dark bg-white rounded mb-3">
-                        <div class="row align-items-baseline">
-                            <div class="col" th:text="${product.getShopName()}">1A (123)</div>
-                            <div class="col"></div>
-                        </div>
-                        <img th:src="@{${product.getImageUrl()}}" style="height: 150px; width: 200px;"
-                             class="rounded my-3" src="/attr"/>
-                        <a th:href="@{${product.getItemUrl()}}">
-                            <span class="d-inline-block text-truncate" th:text="${product.getName()}"
-                                  style="max-width: 200px;"> Item text</span>
+                        <a href="#" th:href="@{/item/{id}(id=${item.id})}">
+                            <img th:src="|data:image/jpeg;base64,${item.image[0].base64}|" class="my-5"
+                                 th:alt="${item.name}" style="width: 150px; height: 150px;"/>
+                            <h6 th:text="${item.name}">text</h6>
                         </a>
-                        <p class="text-danger mb-2" th:text="${product.getPrice()} + ' €'">123,45 €</p>
-                        <p class="text-muted" th:text="'Гарантия: ' +${product.getWarranty()}"></p>
+                        <p class="text-danger mb-2" th:text="${item.price} + ' €'">123,45 €</p>
                     </div>
                 </div>
             </th:block>
-            <!-- end -->
 
         </div>
+        <!-- Category block end -->
 
-        <div class="row text-left justify-content-md-center no-gutters mt-4">
-
-            <span><i class="fa fa-info" aria-hidden="true"></i> Подробная информация</span>
-            <hr class="bg-dark d-inline-block mx-auto w-100">
-
-            <div class="col">
-                <ul class="list-group list-group-flush">
-                    <th:block th:each="details : ${products.get(0).details}">
-                        <li class="list-group-item"><p class="font-weight-bold" th:text="${details.key}">Fourth item</p>
-                            <div class="row">
-                                <th:block th:each="product : ${products}">
-                                    <div class="col" th:text="${details.value}">testme 123</div>
-                                </th:block>
-                            </div>
-                        </li>
-                    </th:block>
-                </ul>
-            </div>
-
-        </div>
     </div>
 </section>
-
-<div th:replace="fragments/footer :: footer">Footer element</div>
 
 <div th:replace="fragments/external :: javascript">Javascript element</div>
 
