@@ -12,4 +12,6 @@ public interface CategoryRepository extends CrudRepository<CategoryEntity, Long>
 
     List<CategoryEntity> findTop12ByOrderByIdDesc();
 
+    List<CategoryEntity> findAll();
+
 }

@@ -17,8 +17,6 @@ public class IndexController {
 
     @GetMapping({"", "/", "/index"})
     public String mainPage(Model model) {
-        model.addAttribute("categories", indexService.getLastCategories());
-        model.addAttribute("items", indexService.getLastItems());
-        return "index"; //view
+        return indexService.executeIndex(model);
     }
 }

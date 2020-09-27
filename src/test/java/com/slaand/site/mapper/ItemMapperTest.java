@@ -3,12 +3,15 @@ package com.slaand.site.mapper;
 import com.slaand.site.model.dto.ItemDto;
 import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ItemEntity;
+import com.slaand.site.repository.CategoryRepository;
 import com.slaand.site.service.admin.CategoryAdminService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,7 +26,7 @@ class ItemMapperTest {
     private ItemMapper itemMapper = new ItemMapperImpl();
 
     @Mock
-    private CategoryAdminService adminService;
+    private CategoryRepository categoryRepository;
 
     private ItemEntity expectedEntity;
     private ItemDto expectedDto;
@@ -43,7 +46,7 @@ class ItemMapperTest {
 
     @Test
     void itemDtoToItemEntity_isNullItem() {
-        ItemEntity testEntity = itemMapper.itemDtoToItemEntity(null, adminService);
+        ItemEntity testEntity = itemMapper.itemDtoToItemEntity(null, categoryRepository);
         assertNull(testEntity);
     }
 
@@ -70,9 +73,10 @@ class ItemMapperTest {
                 .isHidden(true)
                 .build();
 
-        when(adminService.retrieveSelectedCategory(any())).thenReturn(itemEntity);
+        when(categoryRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(itemEntity));
 
-        ItemEntity testEntity = itemMapper.itemDtoToItemEntity(actualDto, adminService);
+        ItemEntity testEntity = itemMapper.itemDtoToItemEntity(actualDto, categoryRepository);
         assertThat(testEntity).isEqualToIgnoringGivenFields(expectedEntity, "image", "categoryId");
     }
 
@@ -81,7 +85,7 @@ class ItemMapperTest {
         ItemEntity itemEntity = ItemEntity.builder()
                 .id(12345L)
                 .build();
-        itemMapper.itemDtoIntoEntity(null, itemEntity, adminService);
+        itemMapper.itemDtoIntoEntity(null, itemEntity, categoryRepository);
         assertNotNull(itemEntity.getId());
     }
 
@@ -91,7 +95,7 @@ class ItemMapperTest {
                 .id(54321L)
                 .build();
         assertThrows(NullPointerException.class, () ->
-                itemMapper.itemDtoIntoEntity(itemDto, null, adminService));
+                itemMapper.itemDtoIntoEntity(itemDto, null, categoryRepository));
     }
 
     @Test
@@ -112,9 +116,10 @@ class ItemMapperTest {
                 .isHidden(true)
                 .build();
 
-        when(adminService.retrieveSelectedCategory(any())).thenReturn(itemEntity);
+        when(categoryRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(itemEntity));
 
-        itemMapper.itemDtoIntoEntity(testDto, testEntity, adminService);
+        itemMapper.itemDtoIntoEntity(testDto, testEntity, categoryRepository);
         assertThat(testEntity).isEqualToIgnoringGivenFields(expectedEntity, "image", "categoryId");
     }
 

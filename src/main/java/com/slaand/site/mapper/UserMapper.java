@@ -8,17 +8,9 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-//@Mapper(
-//        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
-//        componentModel = "spring",
-//        uses = {
-//                // My other mappers...
-//        })
-@Mapper(componentModel="spring")
+@Mapper
 public abstract class UserMapper {
 
     public static final UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -26,10 +18,10 @@ public abstract class UserMapper {
     public abstract UserEntity userDtoToUserEntity(UserDto userDto, @Context PasswordEncoder passwordEncoder);
 
     @AfterMapping
-    public void fillInformation(UserDto source,
+    public void fillInformation(UserDto userDto,
                                 @MappingTarget UserEntity target,
                                 @Context PasswordEncoder passwordEncoder) {
-        target.setPassword(passwordEncoder.encode(source.getPassword()));
+        target.setPassword(passwordEncoder.encode(userDto.getPassword()));
         target.setRole(UserRole.USER);
     }
 

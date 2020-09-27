@@ -37,10 +37,7 @@ public class ItemAdminService {
     private ItemRepository itemRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository; // TODO replace
-
-    @Autowired
-    private CategoryAdminService categoryAdminService;
+    private CategoryRepository categoryRepository;
 
     private static final String ITEM_PAGE_PATH = "/admin/items";
     private static final String ITEM_PAGE_REDIRECT_PATH = "redirect:/admin/items";
@@ -49,7 +46,7 @@ public class ItemAdminService {
 
         final List<ItemEntity> items = retrieveLastTwelveItemList();
         model.addAttribute("items", Objects.requireNonNullElse(items, Collections.emptyList()));
-        final Iterable<CategoryEntity> categories = categoryRepository.findAll();
+        final List<CategoryEntity> categories = categoryRepository.findAll();
         model.addAttribute("categories", Objects.requireNonNullElse(categories, Collections.emptyList()));
         if (ObjectUtils.isEmpty(id)) {
             model.addAttribute("itemDto", new ItemDto());
@@ -63,7 +60,7 @@ public class ItemAdminService {
 
     public String createItem(final ItemDto toEdit, final MultipartFile file, final Model model) {
 
-        ItemEntity itemEntity = ItemMapper.INSTANCE.itemDtoToItemEntity(toEdit, categoryAdminService);
+        ItemEntity itemEntity = ItemMapper.INSTANCE.itemDtoToItemEntity(toEdit, categoryRepository);
         itemEntity.setImage(Collections.singletonList(getBase64FromImageFile(file, itemEntity)));
         itemRepository.save(itemEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Категория создана успешно!");
@@ -89,13 +86,17 @@ public class ItemAdminService {
 
     public String updateItem(final ItemDto toEdit, final MultipartFile file, final Model model) {
 
-        ItemEntity itemEntity = retrieveSelectedItem(toEdit.getId());
+        ItemEntity itemEntity = Try.of(() -> retrieveSelectedItem(toEdit.getId()))
+                .getOrElse(() -> {
+                    BootstrapUtils.setAlertModel(model, Alert.DANGER, "Раздел не был найден!");
+                    return null;
+                });
         if(ObjectUtils.isEmpty(itemEntity)) {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
             return ITEM_PAGE_REDIRECT_PATH;
         }
 
-        ItemMapper.INSTANCE.itemDtoIntoEntity(toEdit, itemEntity, categoryAdminService);
+        ItemMapper.INSTANCE.itemDtoIntoEntity(toEdit, itemEntity, categoryRepository);
         if(!file.isEmpty()) {
             itemEntity.setImage(Collections.singletonList(getBase64FromImageFile(file, itemEntity)));
         }

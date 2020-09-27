@@ -76,7 +76,12 @@ public class OrderAdminService {
 
     public String updateOrder(final OrderDto toEdit, final Model model) {
 
-        OrderEntity orderEntity = retrieveSelectedOrder(toEdit.getId());
+        OrderEntity orderEntity = Try.of(() -> retrieveSelectedOrder(toEdit.getId()))
+                .getOrElse(() -> {
+                    BootstrapUtils.setAlertModel(model, Alert.DANGER, "Раздел не был найден!");
+                    return null;
+                });
+
         if(ObjectUtils.isEmpty(orderEntity)) {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
             return ORDER_PAGE_REDIRECT_PATH;

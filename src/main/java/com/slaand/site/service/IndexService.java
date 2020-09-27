@@ -5,6 +5,7 @@ import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.repository.CategoryRepository;
 import com.slaand.site.repository.ItemRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +20,12 @@ public class IndexService {
     public IndexService(final CategoryRepository categoryRepository, final ItemRepository itemRepository) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
+    }
+
+    public String executeIndex(Model model) {
+        model.addAttribute("categories", getLastCategories());
+        model.addAttribute("items", getLastItems());
+        return "index";
     }
 
     public List<CategoryEntity> getLastCategories() {

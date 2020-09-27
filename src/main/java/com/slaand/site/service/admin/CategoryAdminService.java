@@ -73,7 +73,12 @@ public class CategoryAdminService {
 
     public String updateCategory(final CategoryDto toEdit, final MultipartFile file, final Model model) {
 
-        CategoryEntity categoryEntity = retrieveSelectedCategory(toEdit.getId());
+        CategoryEntity categoryEntity = Try.of(() -> retrieveSelectedCategory(toEdit.getId()))
+                .getOrElse(() -> {
+                    BootstrapUtils.setAlertModel(model, Alert.DANGER, "Раздел не был найден!");
+                    return null;
+                });
+
         if(ObjectUtils.isEmpty(categoryEntity)) {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
             return CATEGORY_PAGE_REDIRECT_PATH;
