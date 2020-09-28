@@ -2,15 +2,11 @@ package com.slaand.site.service.admin;
 
 import com.slaand.site.exception.ResourceNotFoundException;
 import com.slaand.site.mapper.ItemMapper;
-import com.slaand.site.mapper.ItemMapper;
-import com.slaand.site.model.dto.ItemDto;
 import com.slaand.site.model.dto.ItemDto;
 import com.slaand.site.model.entity.CategoryEntity;
-import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.ImageItemEntity;
 import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.repository.CategoryRepository;
-import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.util.BootstrapUtils;
 import com.slaand.site.util.OtherUtils;
@@ -24,11 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class ItemAdminService {
@@ -38,9 +32,6 @@ public class ItemAdminService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    private static final String ITEM_PAGE_PATH = "/admin/items";
-    private static final String ITEM_PAGE_REDIRECT_PATH = "redirect:/admin/items";
 
     public String executeItems(final Long id, final Model model) {
 
@@ -55,7 +46,7 @@ public class ItemAdminService {
             ItemDto dto = ItemMapper.INSTANCE.itemEntityToItemDto(item);
             model.addAttribute("itemDto", dto);
         }
-        return ITEM_PAGE_PATH;
+        return "/admin/items";
     }
 
     public String createItem(final ItemDto toEdit, final MultipartFile file, final Model model) {
@@ -64,7 +55,7 @@ public class ItemAdminService {
         itemEntity.setImage(Collections.singletonList(getBase64FromImageFile(file, itemEntity)));
         itemRepository.save(itemEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Категория создана успешно!");
-        return ITEM_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/items";
     }
 
     public String deleteItem(final Long id, final Model model) {
@@ -76,12 +67,12 @@ public class ItemAdminService {
                 });
 
         if (ObjectUtils.isEmpty(itemEntity)) {
-            return ITEM_PAGE_REDIRECT_PATH;
+            return "redirect:/admin/items";
         }
 
         itemRepository.delete(itemEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Раздел был успешно удалён!");
-        return ITEM_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/items";
     }
 
     public String updateItem(final ItemDto toEdit, final MultipartFile file, final Model model) {
@@ -93,7 +84,7 @@ public class ItemAdminService {
                 });
         if(ObjectUtils.isEmpty(itemEntity)) {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
-            return ITEM_PAGE_REDIRECT_PATH;
+            return "redirect:/admin/items";
         }
 
         ItemMapper.INSTANCE.itemDtoIntoEntity(toEdit, itemEntity, categoryRepository);
@@ -103,7 +94,7 @@ public class ItemAdminService {
 
         itemRepository.save(itemEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Данные заказа обновлены успешно!");
-        return ITEM_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/items";
     }
 
     @SneakyThrows

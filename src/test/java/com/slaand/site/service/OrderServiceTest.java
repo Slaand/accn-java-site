@@ -8,6 +8,7 @@ import com.slaand.site.model.enumerated.UserRole;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.OrderRepository;
 import com.slaand.site.repository.UserRepository;
+import com.slaand.site.service.user.ProfileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,14 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
@@ -42,6 +51,12 @@ class OrderServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private Authentication authentication;
+
+    @Mock
+    private SecurityContext securityContext;
 
     @Captor
     private ArgumentCaptor<OrderEntity> entityArgumentCaptor;
@@ -74,10 +89,27 @@ class OrderServiceTest {
     @Test
     void executeOrder_idIsNull() {
 
+        UserEntity userEntity = UserEntity.builder()
+                .id(12L)
+                .role(UserRole.USER)
+                .email("email@mail.com")
+                .build();
+
+        UserDetails userDetails = User.withDefaultPasswordEncoder()
+                .username("user").password("password").roles("USER").build();
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
         when(itemRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(itemEntity));
 
-        String returnUrl = orderService.executeOrder(1L, userEntity, mockModel);
+        when(userRepository.findByEmail(any()))
+                .thenReturn(Optional.ofNullable(userEntity));
+
+        String returnUrl = orderService.executeOrder(1L, mockModel);
 
         var itemDto = (ItemEntity) mockModel.getAttribute("item");
         assertEquals("order", returnUrl);

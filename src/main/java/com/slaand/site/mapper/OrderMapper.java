@@ -61,7 +61,6 @@ public abstract class OrderMapper {
             orderEntity.informUser(new NewOrder(orderEntity));
         } else {
             orderEntity.informUser(order.getStatus().get(orderEntity));
-//            orderEntity.setStatus(order.getStatus().get(orderEntity));
         }
         if(orderEntity.getCreated() == null) {
             orderEntity.setCreated(ZonedDateTime.now());

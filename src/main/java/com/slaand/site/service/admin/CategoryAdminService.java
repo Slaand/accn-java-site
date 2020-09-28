@@ -5,6 +5,7 @@ import com.slaand.site.mapper.CategoryMapper;
 import com.slaand.site.model.dto.CategoryDto;
 import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ImageCategoryEntity;
+import com.slaand.site.patterns.memento.CategoryRestoreService;
 import com.slaand.site.repository.CategoryRepository;
 import com.slaand.site.util.BootstrapUtils;
 import com.slaand.site.util.OtherUtils;
@@ -28,10 +29,10 @@ public class CategoryAdminService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private static final String CATEGORY_PAGE_PATH = "/admin/categories";
-    private static final String CATEGORY_PAGE_REDIRECT_PATH = "redirect:/admin/categories";
+    @Autowired
+    private CategoryRestoreService categoryRestoreService;
 
-    public String executeCategories(final Long id, final Model model) {
+    public String executeCategories(final Long id, final Model model, final boolean rollback) {
 
         final List<CategoryEntity> categories = retrieveLastTwelveCategoryList();
         model.addAttribute("categories", Objects.requireNonNullElse(categories, Collections.emptyList()));
@@ -39,10 +40,13 @@ public class CategoryAdminService {
             model.addAttribute("categoryDto", new CategoryDto());
         } else {
             CategoryEntity category = retrieveSelectedCategory(id);
+            if (rollback) {
+                categoryRestoreService.getInstance(category).rollback();
+            }
             CategoryDto dto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(category);
             model.addAttribute("categoryDto", dto);
         }
-        return CATEGORY_PAGE_PATH;
+        return "/admin/categories";
     }
 
     public String createCategory(final CategoryDto toEdit, final MultipartFile file, final Model model) {
@@ -51,7 +55,7 @@ public class CategoryAdminService {
         categoryEntity.setImage(getBase64FromImageFile(file, categoryEntity));
         categoryRepository.save(categoryEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Категория создана успешно!");
-        return CATEGORY_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/categories";
     }
 
     public String deleteCategory(final Long id, final Model model) {
@@ -63,12 +67,12 @@ public class CategoryAdminService {
                 });
 
         if (ObjectUtils.isEmpty(categoryEntity)) {
-            return CATEGORY_PAGE_REDIRECT_PATH;
+            return "redirect:/admin/categories";
         }
 
         categoryRepository.delete(categoryEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Раздел был успешно удалён!");
-        return CATEGORY_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/categories";
     }
 
     public String updateCategory(final CategoryDto toEdit, final MultipartFile file, final Model model) {
@@ -81,8 +85,10 @@ public class CategoryAdminService {
 
         if(ObjectUtils.isEmpty(categoryEntity)) {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
-            return CATEGORY_PAGE_REDIRECT_PATH;
+            return "redirect:/admin/categories";
         }
+
+        categoryRestoreService.getInstance(categoryEntity).saveState();
 
         CategoryMapper.INSTANCE.categoryDtoIntoEntity(toEdit, categoryEntity);
         if(!file.isEmpty()) {
@@ -91,7 +97,7 @@ public class CategoryAdminService {
 
         categoryRepository.save(categoryEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Данные заказа обновлены успешно!");
-        return CATEGORY_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/categories";
     }
 
     @SneakyThrows

@@ -1,11 +1,9 @@
 package com.slaand.site.controller;
 
 import com.slaand.site.model.dto.OrderDto;
-import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +20,8 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/order/{id}")
-    public String orderItem(@PathVariable Long id, @AuthenticationPrincipal UserEntity user, Model model) {
-        return orderService.executeOrder(id, user, model);
+    public String orderItem(@PathVariable Long id, Model model) {
+        return orderService.executeOrder(id, model);
     }
 
     @PostMapping("/order/confirm")

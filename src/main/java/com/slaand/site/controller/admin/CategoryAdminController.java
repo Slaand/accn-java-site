@@ -29,7 +29,12 @@ public class CategoryAdminController {
 
     @GetMapping({"/categories", "/categories/{id}/edit"})
     public String listCategories(@PathVariable(required = false) Long id, Model model) {
-        return categoryAdminService.executeCategories(id, model);
+        return categoryAdminService.executeCategories(id, model, false);
+    }
+
+    @GetMapping("/categories/{id}/restore")
+    public String restoreCategory(@PathVariable Long id, Model model) {
+        return categoryAdminService.executeCategories(id, model, true);
     }
 
     @GetMapping("/categories/{id}/delete")

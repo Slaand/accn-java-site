@@ -4,16 +4,11 @@ import com.slaand.site.model.entity.OrderEntity;
 import com.slaand.site.model.enumerated.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Basic;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 
 @Slf4j
 @Embeddable
 public class ProcessingOrder extends Status {
-
-//    @Basic
-//    private String status;
 
     private final OrderEntity orderEntity;
 

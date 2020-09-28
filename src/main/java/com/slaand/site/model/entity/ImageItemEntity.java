@@ -2,12 +2,9 @@ package com.slaand.site.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

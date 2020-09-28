@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
@@ -31,10 +32,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
-
-//    @InjectMocks
-//    private CategoryService categoryService;
-
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -69,20 +66,7 @@ class CategoryServiceTest {
         when(itemRepository.findAllByCategoryId(any()))
                 .thenReturn(Collections.singletonList(itemEntity));
 
-//        List<ItemEntity> dummyItems = Collections.singletonList(itemEntity);
-//        webElementFactory.fillWithDummyElements(ElementType.ITEM, 40, dummyItems.size());
-//        WebElementFactory mockFactory = mock(WebElementFactory.class);
-
-//        when(webElementFactory.fillWithDummyElements(any(), any(), any())).thenCallRealMethod();
-//        doNothing().when(webElementFactory).fillWithDummyElements(any(), any(), any());
-
-//        doNothing().when(webElementFactory).fillWithDummyElements(any(), anyInt(), anyInt());
-
-//        List<ItemEntity> test = new ArrayList<>();
-//        test.add(itemEntity);
-//        when(webElementFactory.fillWithDummyElements(any(), anyInt(), anyInt()))
-//                .thenReturn(test);
-
-        categoryService.executeOrder(2L, mockModel);
+        String returnUrl = categoryService.executeOrder(2L, mockModel);
+        assertEquals("category", returnUrl);
     }
 }

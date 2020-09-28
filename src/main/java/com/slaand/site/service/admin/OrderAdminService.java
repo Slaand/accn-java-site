@@ -45,9 +45,6 @@ public class OrderAdminService {
     @Qualifier("emailService")
     private EmailNotificationService emailNotificationService;
 
-    private static final String ORDER_PAGE_PATH = "/admin/orders";
-    private static final String ORDER_PAGE_REDIRECT_PATH = "redirect:/admin/orders";
-
     public String executeOrders(final Long id, final Model model) {
 
         final List<OrderEntity> orders = retrieveLastTwelveOrderList();
@@ -66,7 +63,7 @@ public class OrderAdminService {
         List<MessageType> emailMessageTypes = new ArrayList<>(EnumSet.allOf(MessageType.class));
         model.addAttribute("types", emailMessageTypes);
         model.addAttribute("emailInformation", new EmailInformation());
-        return ORDER_PAGE_PATH;
+        return "/admin/orders";
     }
 
     public String deleteOrder(final Long id, final Model model) {
@@ -78,12 +75,12 @@ public class OrderAdminService {
                 });
 
         if (ObjectUtils.isEmpty(orderEntity)) {
-            return ORDER_PAGE_REDIRECT_PATH;
+            return "redirect:/admin/orders";
         }
 
         orderRepository.delete(orderEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Заказ был успешно удалён!");
-        return ORDER_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/orders";
     }
 
     public String updateOrder(final OrderDto toEdit, final Model model) {
@@ -96,14 +93,14 @@ public class OrderAdminService {
 
         if(ObjectUtils.isEmpty(orderEntity)) {
             BootstrapUtils.setAlertModel(model, Alert.DANGER, "Данные заказа не найдены!");
-            return ORDER_PAGE_REDIRECT_PATH;
+            return "redirect:/admin/orders";
         }
 
         OrderMapper.INSTANCE.orderDtoIntoEntity(toEdit, orderEntity, itemRepository, userRepository);
 
         orderRepository.save(orderEntity);
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Данные заказа обновлены успешно!");
-        return ORDER_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/orders";
     }
 
     public OrderEntity retrieveSelectedOrder(final Long id) {
@@ -122,6 +119,6 @@ public class OrderAdminService {
             emailNotificationService.publish(email);
         }
         BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Уведомления отправлены!");
-        return ORDER_PAGE_REDIRECT_PATH;
+        return "redirect:/admin/orders";
     }
 }

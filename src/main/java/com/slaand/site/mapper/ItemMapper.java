@@ -5,7 +5,6 @@ import com.slaand.site.model.dto.ItemDto;
 import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.repository.CategoryRepository;
-import com.slaand.site.service.admin.CategoryAdminService;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.InheritConfiguration;

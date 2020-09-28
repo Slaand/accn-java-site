@@ -1,7 +1,6 @@
 package com.slaand.site.controller.user;
 
 import com.slaand.site.model.dto.UserDto;
-import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

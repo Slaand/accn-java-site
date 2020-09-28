@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -27,26 +27,22 @@ import java.time.ZonedDateTime;
 @Builder
 @Entity
 @Table(name = "tbl_order")
-public class OrderEntity {
+public class OrderEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @Column(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userId;
 
-//    @Column(name = "item_id")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private ItemEntity itemId;
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private ZonedDateTime created;
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private ZonedDateTime updated;
 
     @Embedded

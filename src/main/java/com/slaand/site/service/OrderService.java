@@ -12,11 +12,14 @@ import com.slaand.site.repository.OrderRepository;
 import com.slaand.site.repository.UserRepository;
 import com.slaand.site.util.BootstrapUtils;
 import com.slaand.site.util.bootstrap.Alert;
-import io.vavr.control.Try;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -39,7 +42,15 @@ public class OrderService {
     @Autowired
     private ItemService itemService;
 
-    public String executeOrder(final Long id, final UserEntity user, final Model model) {
+    public String executeOrder(final Long id, final Model model) {
+
+        UserEntity user = null;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Not found!"));
+        }
 
         final ItemEntity item = retrieveSelectedItem(id);
         model.addAttribute("item", item);

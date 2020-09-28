@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +36,8 @@ class ItemServiceTest {
 
         when(itemRepository.findById(1L)).thenReturn(Optional.ofNullable(itemEntity));
 
-        itemService.executeItem(1L, mockModel);
+        String returnUrl = itemService.executeItem(1L, mockModel);
+        assertEquals("item", returnUrl);
 
     }
 }

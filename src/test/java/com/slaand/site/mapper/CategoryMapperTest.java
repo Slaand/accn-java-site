@@ -54,7 +54,7 @@ class CategoryMapperTest {
                 .build();
 
         CategoryEntity testEntity = categoryMapper.categoryDtoToCategoryEntity(actualDto);
-        assertThat(testEntity).isEqualToIgnoringGivenFields(expectedEntity, "image");
+        assertThat(testEntity).isEqualToIgnoringGivenFields(expectedEntity, "image", "states");
     }
 
     @Test

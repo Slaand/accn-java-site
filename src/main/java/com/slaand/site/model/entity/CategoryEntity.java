@@ -1,6 +1,8 @@
 package com.slaand.site.model.entity;
 
 import com.slaand.site.patterns.factory.WebElement;
+import com.slaand.site.patterns.memento.CategoryMemento;
+import com.slaand.site.patterns.memento.CategoryMementoInternal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Stack;
 
 @Getter
 @Setter
@@ -41,11 +45,31 @@ public class CategoryEntity implements WebElement {
     )
     private ImageCategoryEntity image = new ImageCategoryEntity();
 
+    @Transient
+    private Stack<CategoryMemento> states = new Stack<>();
+
     public void setEncodedPicture(String base64) {
         ImageCategoryEntity tempImage = new ImageCategoryEntity();
         tempImage.setBase64(base64);
         tempImage.setCategoryId(this);
         setImage(tempImage);
+    }
+
+    public CategoryMemento getMemento() {
+        var state = new CategoryMementoInternal();
+        state.setId(id);
+        state.setName(name);
+        state.setIsHidden(isHidden);
+        state.setImage(image);
+        return state;
+    }
+
+    public void setMemento(CategoryMemento memento) {
+        var state = (CategoryMementoInternal) memento;
+        this.id = state.getId();
+        this.name = state.getName();
+        this.isHidden = state.getIsHidden();
+        this.image = state.getImage();
     }
 
 }

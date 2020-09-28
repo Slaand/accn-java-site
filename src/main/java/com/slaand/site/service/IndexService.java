@@ -18,7 +18,9 @@ public class IndexService {
     private ItemRepository itemRepository;
     private WebElementFactory webElementFactory;
 
-    public IndexService(final CategoryRepository categoryRepository, final ItemRepository itemRepository, final WebElementFactory webElementFactory) {
+    public IndexService(final CategoryRepository categoryRepository,
+                        final ItemRepository itemRepository,
+                        final WebElementFactory webElementFactory) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
         this.webElementFactory = webElementFactory;

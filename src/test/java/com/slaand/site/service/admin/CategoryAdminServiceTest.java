@@ -2,6 +2,7 @@ package com.slaand.site.service.admin;
 
 import com.slaand.site.model.dto.CategoryDto;
 import com.slaand.site.model.entity.CategoryEntity;
+import com.slaand.site.patterns.memento.CategoryRestoreService;
 import com.slaand.site.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,6 +39,9 @@ class CategoryAdminServiceTest {
 
     @Mock
     private CategoryRepository categoryRepository;
+
+    @Mock
+    private CategoryRestoreService categoryRestoreService;
 
     @Captor
     private ArgumentCaptor<CategoryEntity> entityArgumentCaptor;
@@ -71,7 +76,7 @@ class CategoryAdminServiceTest {
         when(categoryRepository.findTop12ByOrderByIdDesc())
                 .thenReturn(Collections.singletonList(categoryEntity));
 
-        String returnUrl = categoryAdminService.executeCategories(null, mockModel);
+        String returnUrl = categoryAdminService.executeCategories(null, mockModel, false);
 
         var categoryDto = (CategoryDto) mockModel.getAttribute("categoryDto");
         var categories = (List<CategoryEntity>) mockModel.getAttribute("categories");
@@ -91,7 +96,7 @@ class CategoryAdminServiceTest {
         when(categoryRepository.findById(2L))
                 .thenReturn(Optional.ofNullable(categoryEntityTwo));
 
-        String returnUrl = categoryAdminService.executeCategories(2L, mockModel);
+        String returnUrl = categoryAdminService.executeCategories(2L, mockModel, false);
 
         var categoryDto = (CategoryDto) mockModel.getAttribute("categoryDto");
         var categories = (List<CategoryEntity>) mockModel.getAttribute("categories");
@@ -150,6 +155,9 @@ class CategoryAdminServiceTest {
         MultipartFile file = new MockMultipartFile("name.jpg", InputStream.nullInputStream());
         when(categoryRepository.findById(1L))
                 .thenReturn(Optional.ofNullable(categoryEntity));
+
+        when(categoryRestoreService.getInstance(any())).thenReturn(categoryRestoreService);
+
         String returnUrl = categoryAdminService.updateCategory(categoryDto, file, mockModel);
         assertEquals("redirect:/admin/categories", returnUrl);
         verify(categoryRepository).save(entityArgumentCaptor.capture());

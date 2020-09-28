@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,7 +55,8 @@ class IndexServiceTest {
         when(itemRepository.findTop6ByOrderByIdDesc())
                 .thenReturn(Collections.singletonList(itemEntity));
 
-        indexService.executeIndex(mockModel);
+        String returnUrl = indexService.executeIndex(mockModel);
+        assertEquals("index", returnUrl);
 
     }
 

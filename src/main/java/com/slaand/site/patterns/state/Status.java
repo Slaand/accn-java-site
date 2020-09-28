@@ -9,13 +9,8 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 
-//@Embeddable
-//@Inheritance(strategy = InheritanceType.JOINED)
 @Embeddable
 @MappedSuperclass
 @Getter

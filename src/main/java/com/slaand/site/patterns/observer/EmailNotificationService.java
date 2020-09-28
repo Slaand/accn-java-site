@@ -1,8 +1,5 @@
 package com.slaand.site.patterns.observer;
 
-import com.slaand.site.repository.UserRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 

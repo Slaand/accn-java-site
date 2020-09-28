@@ -22,7 +22,7 @@ public class CategoryService {
 
     public CategoryService(final CategoryRepository categoryRepository,
                            final ItemRepository itemRepository,
-                           final WebElementFactory webElementFactory) {
+                           final WebElementFactory<ItemEntity> webElementFactory) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
         this.webElementFactory = webElementFactory;
