@@ -1,19 +1,15 @@
 package com.slaand.site.model.entity;
 
-import com.slaand.site.model.enumerated.OrderStatus;
+import com.slaand.site.patterns.state.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -53,8 +49,8 @@ public class OrderEntity {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private ZonedDateTime updated;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    @Embedded
+    private Status status;
 
     private String address;
 
@@ -67,6 +63,15 @@ public class OrderEntity {
     @Override
     public int hashCode() {
         return 31;
+    }
+
+    public void informUser(Status newStatus) {
+        this.status = newStatus;
+        this.status.onEnterState(this);
+    }
+
+    public void observe() {
+        this.status.observe();
     }
 
 }

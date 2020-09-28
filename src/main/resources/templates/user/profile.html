@@ -89,7 +89,7 @@
                         <b>Адрес доставки:</b> <th:block th:text="${order.address}">text</th:block>
                     </div>
                     <div class="col-2">
-                        <b>Статус:</b> <th:block th:text="${order.status}">text</th:block>
+                        <b>Статус:</b> <th:block th:text="${order.status.status}">text</th:block>
                     </div>
                     <div class="col-1">
                         <b>Цена:</b> <th:block th:text="${order.itemId.price}">text</th:block>

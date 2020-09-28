@@ -6,9 +6,11 @@ import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.OrderEntity;
 import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.model.enumerated.OrderStatus;
+import com.slaand.site.patterns.state.NewOrder;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -17,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,13 +45,13 @@ class OrderMapperTest {
         expectedDto = OrderDto.builder()
                 .id(123L)
                 .address("orderAddress")
-                .status(OrderStatus.DELIVERED.name())
+                .status(OrderStatus.DELIVERED)
                 .build();
 
         expectedEntity = OrderEntity.builder()
                 .id(321L)
                 .address("orderAddress")
-                .status(OrderStatus.DELIVERED)
+                .status(OrderStatus.DELIVERED.get(expectedEntity))
                 .build();
     }
 
@@ -76,15 +79,15 @@ class OrderMapperTest {
                 .userId(1111L)
                 .itemId(2222L)
                 .address("orderAddress")
-                .status(OrderStatus.DELIVERED.name())
+                .status(OrderStatus.DELIVERED)
                 .build();
 
         when(itemRepository.findById(2222L)).thenReturn(Optional.of(ItemEntity.builder().id(2222L).build()));
         when(userRepository.findById(1111L)).thenReturn(Optional.of(UserEntity.builder().id(1111L).build()));
 
         OrderEntity testEntity = orderMapper.orderDtoToOrderEntity(actualDto, itemRepository, userRepository);
-        assertThat(testEntity).isEqualToIgnoringGivenFields(expectedEntity,
-                "userId", "itemId", "created", "updated");
+        assertEquals(expectedEntity.getAddress(), testEntity.getAddress());
+        assertEquals("NEW", testEntity.getStatus().status);
     }
 
     @Test
@@ -115,7 +118,7 @@ class OrderMapperTest {
                 .id(321L)
                 .itemId(2222L)
                 .userId(1111L)
-                .status(OrderStatus.DELIVERED.name())
+                .status(OrderStatus.DELIVERED)
                 .address("orderAddress")
                 .build();
 
@@ -123,12 +126,14 @@ class OrderMapperTest {
                 .id(321L)
                 .build();
 
+        testEntity.setStatus(new NewOrder(testEntity));
+
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(ItemEntity.builder().id(2222L).build()));
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(UserEntity.builder().id(1111L).build()));
 
         orderMapper.orderDtoIntoEntity(testDto, testEntity, itemRepository, userRepository);
-        assertThat(testEntity).isEqualToIgnoringGivenFields(expectedEntity,
-                "userId", "itemId", "created", "updated");
+        assertEquals(OrderStatus.DELIVERED.name(), testEntity.getStatus().status);
+        assertEquals(expectedEntity.getAddress(), testEntity.getAddress());
     }
 
     @Test
@@ -144,12 +149,13 @@ class OrderMapperTest {
                 .userId(UserEntity.builder().id(678L).build())
                 .itemId(ItemEntity.builder().id(543L).build())
                 .address("orderAddress")
-                .status(OrderStatus.NEW)
                 .build();
+
+        actualEntity.setStatus(new NewOrder(actualEntity));
 
         expectedDto.setUserId(678L);
         expectedDto.setItemId(543L);
-        expectedDto.setStatus(OrderStatus.NEW.name());
+        expectedDto.setStatus(OrderStatus.NEW);
 
         OrderDto testDto = orderMapper.orderEntityToOrderDto(actualEntity);
         assertThat(testDto).isEqualToComparingFieldByField(expectedDto);

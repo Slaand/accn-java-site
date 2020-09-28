@@ -1,15 +1,13 @@
 package com.slaand.site.model.entity;
 
+import com.slaand.site.patterns.factory.WebElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,9 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -30,7 +28,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "tbl_item")
-public class ItemEntity {
+public class ItemEntity implements WebElement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -64,6 +62,13 @@ public class ItemEntity {
     public void removeImage(ImageItemEntity imageItemEntity) {
         image.remove(imageItemEntity);
         imageItemEntity.setItemId(null);
+    }
+
+    public void setEncodedPicture(String base64) {
+        ImageItemEntity tempImage = new ImageItemEntity();
+        tempImage.setBase64(base64);
+        tempImage.setItemId(this);
+        setImage(Collections.singletonList(tempImage));
     }
 
 }

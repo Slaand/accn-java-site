@@ -1,11 +1,10 @@
 package com.slaand.site.model.entity;
 
+import com.slaand.site.patterns.factory.WebElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -14,11 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +23,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "tbl_category")
-public class CategoryEntity {
+public class CategoryEntity implements WebElement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,5 +40,12 @@ public class CategoryEntity {
             orphanRemoval = true
     )
     private ImageCategoryEntity image = new ImageCategoryEntity();
+
+    public void setEncodedPicture(String base64) {
+        ImageCategoryEntity tempImage = new ImageCategoryEntity();
+        tempImage.setBase64(base64);
+        tempImage.setCategoryId(this);
+        setImage(tempImage);
+    }
 
 }

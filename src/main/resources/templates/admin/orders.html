@@ -122,7 +122,7 @@
                     </div>
                     <div class="col-3">
                         <b>Клиент:</b> <th:block th:text="'(' +${order.userId.id}+ ')' +${order.userId.name}">text</th:block><br>
-                        <b>Статус:</b> <th:block th:text="${order.status}">text</th:block>
+                        <b>Статус:</b> <th:block th:text="${order.status.status}">text</th:block>
                     </div>
                     <div class="col-3">
                         <b>Куплено:</b> <th:block th:text="${order.itemId.name}">text</th:block><br>
@@ -143,6 +143,69 @@
         <th:block th:unless="${orders.size() > 0}">
             <p class="font-weight-light text-center">Заказов нет!</p>
         </th:block>
+
+        <div class="text-center pt-5">
+            <div class="row">
+                <div class="col">
+                    <h6><i class="fas fa-cart-arrow-down"></i> Отправить сообщения</h6>
+                </div>
+            </div>
+
+            <hr class="bg-dark mb-4 mt-4 d-inline-block mx-auto w-50">
+        </div>
+
+        <!-- New order form -->
+        <form th:action="@{/admin/orders/email}"
+              method="post" enctype="multipart/form-data" th:object="${emailInformation}">
+
+            <div class="form-group row justify-content-center">
+                <label for="title" class="col-sm-2 col-form-label">Заголовок</label>
+                <div class="col-sm-4">
+                    <input type="text" id="title" class="form-control" th:classappend="${titleError == null ? '' : 'is-invalid'}"
+                           th:field="*{title}" th:value="${title}" />
+
+                    <th:block th:unless="${titleError == null}">
+                        <div class="invalid-feedback" th:text="${titleError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="message" class="col-sm-2 col-form-label">Сообщение</label>
+                <div class="col-sm-4">
+                    <input type="text" id="message" class="form-control" th:classappend="${messageError == null ? '' : 'is-invalid'}"
+                           th:field="*{message}" th:value="${message}" />
+
+                    <th:block th:unless="${messageError == null}">
+                        <div class="invalid-feedback" th:text="${messageError}"></div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label for="type" class="col-sm-2 col-form-label">Статус</label>
+                <div class="col-sm-4">
+                    <select id="type" th:field="*{type}" th:classappend="${typeError == null ? '' : 'is-invalid'}">
+                        <option
+                                th:each="type: ${types}"
+                                th:value="${type}"
+                                th:text="${type}" ></option>
+                    </select>
+
+                    <th:block th:unless="${typeError == null}">
+                        <div class="invalid-feedback" th:text="${typeError}"></div>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="form-group row justify-content-center pt-3 mt-3">
+                <div class="col-sm-4">
+
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </div>
+        </form>
+        <!-- End new order form -->
 
     </div>
 </section>

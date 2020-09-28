@@ -81,6 +81,17 @@
                     </th:block>
                 </div>
             </div>
+            <div class="form-group row justify-content-center">
+                <label th:for="isSubscribed" class="col-sm-2 col-form-label">Подписаться на обновления</label>
+                <div class="col-sm-4">
+                    <input type="checkbox" id="isSubscribed" class="form-control" th:classappend="${isSubscribedError == null ? '' : 'is-invalid'}"
+                           th:field="*{isSubscribed}" th:value="${isSubscribed}" />
+
+                    <th:block th:unless="${isSubscribedError == null}">
+                        <div class="invalid-feedback" th:text="${isSubscribedError}"></div>
+                    </th:block>
+                </div>
+            </div>
             <div class="form-group row justify-content-center pt-3 mt-3">
                 <div class="col-sm-4">
 

@@ -5,6 +5,7 @@ import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.OrderEntity;
 import com.slaand.site.model.entity.UserEntity;
+import com.slaand.site.patterns.state.NewOrder;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.OrderRepository;
 import com.slaand.site.repository.UserRepository;
@@ -107,6 +108,7 @@ class OrderAdminServiceTest {
 
         orderEntityTwo.setUserId(userEntity);
         orderEntityTwo.setItemId(itemEntity);
+        orderEntityTwo.setStatus(new NewOrder(orderEntityTwo));
 
         when(orderRepository.findTop10ByOrderByIdDesc())
                 .thenReturn(Arrays.asList(orderEntity, orderEntityTwo));

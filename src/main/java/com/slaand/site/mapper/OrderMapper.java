@@ -6,6 +6,7 @@ import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.OrderEntity;
 import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.model.enumerated.OrderStatus;
+import com.slaand.site.patterns.state.NewOrder;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.UserRepository;
 import org.mapstruct.AfterMapping;
@@ -26,6 +27,7 @@ public abstract class OrderMapper {
 
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "itemId", ignore = true)
+    @Mapping(target = "status", ignore = true)
     public abstract OrderEntity orderDtoToOrderEntity(OrderDto order,
                                                       @Context ItemRepository itemRepository,
                                                       @Context UserRepository userRepository);
@@ -38,6 +40,7 @@ public abstract class OrderMapper {
 
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "itemId", ignore = true)
+    @Mapping(target = "status", ignore = true)
     public abstract OrderDto orderEntityToOrderDto(OrderEntity order);
 
     @AfterMapping
@@ -55,7 +58,10 @@ public abstract class OrderMapper {
         orderEntity.setUserId(userEntity);
         orderEntity.setItemId(itemEntity);
         if(orderEntity.getStatus() == null) {
-            orderEntity.setStatus(OrderStatus.NEW);
+            orderEntity.informUser(new NewOrder(orderEntity));
+        } else {
+            orderEntity.informUser(order.getStatus().get(orderEntity));
+//            orderEntity.setStatus(order.getStatus().get(orderEntity));
         }
         if(orderEntity.getCreated() == null) {
             orderEntity.setCreated(ZonedDateTime.now());
@@ -67,6 +73,7 @@ public abstract class OrderMapper {
     public void mapToDto(OrderEntity orderEntity, @MappingTarget OrderDto orderDto) {
         orderDto.setItemId(orderEntity.getItemId().getId());
         orderDto.setUserId(orderEntity.getUserId().getId());
+        orderDto.setStatus(OrderStatus.valueOf(orderEntity.getStatus().status));
     }
 
 }

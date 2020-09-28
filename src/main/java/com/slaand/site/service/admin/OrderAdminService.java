@@ -5,7 +5,11 @@ import com.slaand.site.mapper.OrderMapper;
 import com.slaand.site.model.dto.OrderDto;
 import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.OrderEntity;
+import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.model.enumerated.OrderStatus;
+import com.slaand.site.patterns.observer.EmailInformation;
+import com.slaand.site.patterns.observer.EmailNotificationService;
+import com.slaand.site.patterns.observer.MessageType;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.OrderRepository;
 import com.slaand.site.repository.UserRepository;
@@ -13,6 +17,7 @@ import com.slaand.site.util.BootstrapUtils;
 import com.slaand.site.util.bootstrap.Alert;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -36,6 +41,10 @@ public class OrderAdminService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    @Qualifier("emailService")
+    private EmailNotificationService emailNotificationService;
+
     private static final String ORDER_PAGE_PATH = "/admin/orders";
     private static final String ORDER_PAGE_REDIRECT_PATH = "redirect:/admin/orders";
 
@@ -54,6 +63,9 @@ public class OrderAdminService {
             List<ItemEntity> categoryItems = itemRepository.findAllByCategoryId(order.getItemId().getCategoryId());
             model.addAttribute("items", categoryItems);
         }
+        List<MessageType> emailMessageTypes = new ArrayList<>(EnumSet.allOf(MessageType.class));
+        model.addAttribute("types", emailMessageTypes);
+        model.addAttribute("emailInformation", new EmailInformation());
         return ORDER_PAGE_PATH;
     }
 
@@ -101,5 +113,15 @@ public class OrderAdminService {
 
     private List<OrderEntity> retrieveLastTwelveOrderList() {
         return orderRepository.findTop10ByOrderByIdDesc();
+    }
+
+    public String sendEmailToSubscribers(final EmailInformation email, final Model model) {
+        List<UserEntity> subscribed = userRepository.findAllByIsSubscribed(true);
+        for (UserEntity user : subscribed) {
+            email.setName(user.getName());
+            emailNotificationService.publish(email);
+        }
+        BootstrapUtils.setAlertModel(model, Alert.SUCCESS, "Уведомления отправлены!");
+        return ORDER_PAGE_REDIRECT_PATH;
     }
 }

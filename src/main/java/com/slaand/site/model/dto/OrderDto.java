@@ -1,5 +1,6 @@
 package com.slaand.site.model.dto;
 
+import com.slaand.site.model.enumerated.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,6 @@ public class OrderDto {
     private Long userId;
     private Long itemId;
     private String address;
-    private String status;
+    private OrderStatus status;
 
 }

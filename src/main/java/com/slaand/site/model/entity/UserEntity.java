@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -50,6 +51,9 @@ public class UserEntity implements UserDetails {
     private UserRole role;
 
     private String password;
+
+    @Column(name = "is_subscribed")
+    private Boolean isSubscribed;
 
     @OneToMany(
             mappedBy = "userId",

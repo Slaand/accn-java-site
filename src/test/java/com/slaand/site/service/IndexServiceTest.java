@@ -2,6 +2,7 @@ package com.slaand.site.service;
 
 import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ItemEntity;
+import com.slaand.site.patterns.factory.WebElementFactory;
 import com.slaand.site.repository.CategoryRepository;
 import com.slaand.site.repository.ItemRepository;
 import org.junit.jupiter.api.Test;
@@ -20,14 +21,17 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class IndexServiceTest {
 
-    @InjectMocks
-    private IndexService indexService;
-
     @Mock
     private ItemRepository itemRepository;
 
     @Mock
     private CategoryRepository categoryRepository;
+
+    @Mock
+    private WebElementFactory webElementFactory;
+
+    @InjectMocks
+    private IndexService indexService = new IndexService(categoryRepository, itemRepository, webElementFactory);
 
     private Model mockModel = new ExtendedModelMap();
 
