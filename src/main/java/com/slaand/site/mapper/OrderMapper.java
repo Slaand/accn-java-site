@@ -58,7 +58,7 @@ public abstract class OrderMapper {
         orderEntity.setUserId(userEntity);
         orderEntity.setItemId(itemEntity);
         if(orderEntity.getStatus() == null) {
-            orderEntity.informUser(new NewOrder(orderEntity));
+            orderEntity.informUser(new NewOrder());
         } else {
             orderEntity.informUser(order.getStatus().get(orderEntity));
         }

@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import java.io.Serializable;
+
 import static org.thymeleaf.util.StringUtils.isEmpty;
 
 @Getter
@@ -25,7 +27,7 @@ import static org.thymeleaf.util.StringUtils.isEmpty;
 @Builder
 @Entity
 @Table(name = "tbl_image_item")
-public class ImageItemEntity {
+public class ImageItemEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

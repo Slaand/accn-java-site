@@ -73,6 +73,14 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<excludes>
+								<exclude>**/*com/slaand/site/annotation/**</exclude>
+								<exclude>**/*com/slaand/site/config/**</exclude>
+								<exclude>**/*com/slaand/site/exception/**</exclude>
+								<exclude>**/*com/slaand/site/model/**</exclude>
+							</excludes>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

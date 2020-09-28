@@ -11,43 +11,27 @@ import com.slaand.site.patterns.state.Status;
 public enum OrderStatus {
 
     NEW {
-        public OrderStatus next() {
-            return CONFIRMED;
-        }
         public Status get(OrderEntity entity) {
-            return new NewOrder(entity);
+            return new NewOrder();
         }
     }, CONFIRMED{
-        public OrderStatus next() {
-            return PROCESSING;
-        }
         public Status get(OrderEntity entity) {
-            return new ConfirmedOrder(entity);
+            return new ConfirmedOrder();
         }
     }, PROCESSING{
-        public OrderStatus next() {
-            return READY;
-        }
         public Status get(OrderEntity entity) {
-            return new ProcessingOrder(entity);
+            return new ProcessingOrder();
         }
     }, READY{
-        public OrderStatus next() {
-            return DELIVERED;
-        }
         public Status get(OrderEntity entity) {
-            return new ReadyOrder(entity);
+            return new ReadyOrder();
         }
     }, DELIVERED {
-        public OrderStatus next() {
-            return null;
-        }
         public Status get(OrderEntity entity) {
-            return new DeliveredOrder(entity);
+            return new DeliveredOrder();
         }
     };
 
     public abstract Status get(OrderEntity entity);
-    public abstract OrderStatus next();
 
 }

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 @Embeddable
 @MappedSuperclass
@@ -17,7 +18,7 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Status {
+public class Status implements Serializable {
 
     @Basic
     public String status;

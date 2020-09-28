@@ -6,7 +6,6 @@ import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.patterns.observer.EmailNotificationService;
 import com.slaand.site.repository.UserRepository;
 import com.slaand.site.util.BootstrapUtils;
-import com.slaand.site.util.ControllerUtils;
 import com.slaand.site.util.bootstrap.Alert;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -56,9 +55,7 @@ public class UserService implements UserDetailsService {
         boolean isConfirmEmpty = isEmpty(accountDto.getPassword2());
 
         if (isConfirmEmpty || bindingResult.hasErrors()) {
-            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
-
-            model.mergeAttributes(errors);
+            BootstrapUtils.setAlertModel(model, Alert.WARNING, "Password is empty");
             return "/user/register";
         }
 

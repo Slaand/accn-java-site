@@ -108,7 +108,7 @@ class OrderAdminServiceTest {
 
         orderEntityTwo.setUserId(userEntity);
         orderEntityTwo.setItemId(itemEntity);
-        orderEntityTwo.setStatus(new NewOrder(orderEntityTwo));
+        orderEntityTwo.setStatus(new NewOrder());
 
         when(orderRepository.findTop10ByOrderByIdDesc())
                 .thenReturn(Arrays.asList(orderEntity, orderEntityTwo));

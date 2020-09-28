@@ -126,7 +126,7 @@ class OrderMapperTest {
                 .id(321L)
                 .build();
 
-        testEntity.setStatus(new NewOrder(testEntity));
+        testEntity.setStatus(new NewOrder());
 
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(ItemEntity.builder().id(2222L).build()));
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(UserEntity.builder().id(1111L).build()));
@@ -151,7 +151,7 @@ class OrderMapperTest {
                 .address("orderAddress")
                 .build();
 
-        actualEntity.setStatus(new NewOrder(actualEntity));
+        actualEntity.setStatus(new NewOrder());
 
         expectedDto.setUserId(678L);
         expectedDto.setItemId(543L);

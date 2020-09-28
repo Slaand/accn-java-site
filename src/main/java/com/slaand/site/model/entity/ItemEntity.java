@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "tbl_item")
-public class ItemEntity implements WebElement {
+public class ItemEntity implements WebElement, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

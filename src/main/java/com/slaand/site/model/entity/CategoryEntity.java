@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Stack;
 
 @Getter
@@ -27,7 +28,7 @@ import java.util.Stack;
 @Builder
 @Entity
 @Table(name = "tbl_category")
-public class CategoryEntity implements WebElement {
+public class CategoryEntity implements WebElement, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

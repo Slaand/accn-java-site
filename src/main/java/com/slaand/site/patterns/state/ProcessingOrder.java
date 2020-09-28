@@ -10,11 +10,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ProcessingOrder extends Status {
 
-    private final OrderEntity orderEntity;
-
-    public ProcessingOrder(OrderEntity orderEntity) {
+    public ProcessingOrder() {
         status = OrderStatus.PROCESSING.name();
-        this.orderEntity = orderEntity;
     }
 
     @Override
@@ -23,7 +20,7 @@ public class ProcessingOrder extends Status {
         log.info("===== ORDER =================" +
                 "\nTitle: Order status change" +
                 "\nHello, " + order.getUserId().getName() +
-                "\nYour item's " + order.getId() + " status was changed to" + OrderStatus.PROCESSING +
+                "\nYour item's " + order.getId() + " status was changed to " + OrderStatus.PROCESSING +
                 "\nWith best wishes, " +
                 "Your mega ultra shop"
         );

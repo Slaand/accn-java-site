@@ -10,11 +10,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ConfirmedOrder extends Status {
 
-    private final OrderEntity orderEntity;
-
-    public ConfirmedOrder(OrderEntity orderEntity) {
+    public ConfirmedOrder() {
         status = OrderStatus.CONFIRMED.name();
-        this.orderEntity = orderEntity;
     }
 
     @Override
@@ -23,7 +20,7 @@ public class ConfirmedOrder extends Status {
         log.info("===== ORDER =================" +
                 "\nTitle: Order status change" +
                 "\nHello, " + order.getUserId().getName() +
-                "\nYour item's " + order.getId() + " status was changed to" + OrderStatus.CONFIRMED +
+                "\nYour item's " + order.getId() + " status was changed to " + OrderStatus.CONFIRMED +
                 "\nWith best wishes, " +
                 "Your mega ultra shop"
         );
