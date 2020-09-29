@@ -19,7 +19,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 @Getter
 @Setter
@@ -47,7 +48,7 @@ public class CategoryEntity implements WebElement, Serializable {
     private ImageCategoryEntity image = new ImageCategoryEntity();
 
     @Transient
-    private Stack<CategoryMemento> states = new Stack<>();
+    private Deque<CategoryMemento> states = new ArrayDeque<>();
 
     public void setEncodedPicture(String base64) {
         ImageCategoryEntity tempImage = new ImageCategoryEntity();
