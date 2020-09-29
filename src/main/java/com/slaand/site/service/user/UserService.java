@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static org.springframework.util.StringUtils.isEmpty;
@@ -28,10 +27,6 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
-
-    @Autowired
-    @Qualifier("emailService")
-    private EmailNotificationService emailNotificationService;
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -62,11 +57,13 @@ public class UserService implements UserDetailsService {
         if(!StringUtils.equals(accountDto.getPassword(), accountDto.getPassword2())) {
             log.debug("Passwords for user " +accountDto.getEmail()+ " are not equal!");
             BootstrapUtils.setAlertModel(model, Alert.WARNING, "Passwords are not equal");
+            return "/user/register";
         }
 
         if (accountExists(accountDto.getEmail())) {
             log.debug("Passwords for user " +accountDto.getEmail()+ " are not equal!");
             BootstrapUtils.setAlertModel(model, Alert.WARNING, "Account exists!");
+            return "/user/register";
         }
 
         UserEntity user = UserMapper.INSTANCE.userDtoToUserEntity(accountDto, passwordEncoder);

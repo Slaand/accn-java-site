@@ -5,6 +5,9 @@ import com.slaand.site.model.entity.CategoryEntity;
 import com.slaand.site.model.entity.ItemEntity;
 import com.slaand.site.model.entity.OrderEntity;
 import com.slaand.site.model.entity.UserEntity;
+import com.slaand.site.patterns.observer.EmailInformation;
+import com.slaand.site.patterns.observer.EmailNotificationService;
+import com.slaand.site.patterns.observer.MessageType;
 import com.slaand.site.patterns.state.NewOrder;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.OrderRepository;
@@ -16,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -26,7 +30,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,8 +52,14 @@ class OrderAdminServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Spy
+    private EmailNotificationService emailNotificationService;
+
     @Captor
     private ArgumentCaptor<OrderEntity> entityArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<EmailInformation> emailArgumentCaptor;
 
     private Model mockModel = new ExtendedModelMap();
 
@@ -160,7 +172,6 @@ class OrderAdminServiceTest {
         assertEquals("redirect:/admin/orders", returnUrl);
     }
 
-
     @Test
     void updateOrder_success() throws IOException {
 
@@ -184,4 +195,29 @@ class OrderAdminServiceTest {
         OrderEntity value = entityArgumentCaptor.getValue();
         assertEquals("editedName", value.getAddress());
     }
+
+    @Test
+    void sendEmailToSubscribers_success() throws IOException {
+
+        UserEntity userEntity = UserEntity.builder()
+                .id(321L)
+                .name("userName")
+                .build();
+
+        EmailInformation emailInformation = EmailInformation.builder()
+                .type(MessageType.NOTIFICATION)
+                .name("3")
+                .message("2")
+                .title("1")
+                .build();
+
+        when(userRepository.findAllByIsSubscribed(any()))
+                .thenReturn(Collections.singletonList(userEntity));
+
+        String returnUrl = orderAdminService.sendEmailToSubscribers(emailInformation, mockModel);
+
+        assertEquals("redirect:/admin/orders", returnUrl);
+        verify(emailNotificationService).publish(emailArgumentCaptor.capture());
+    }
+
 }

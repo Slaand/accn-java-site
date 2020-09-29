@@ -7,6 +7,7 @@ import com.slaand.site.model.entity.OrderEntity;
 import com.slaand.site.model.entity.UserEntity;
 import com.slaand.site.model.enumerated.OrderStatus;
 import com.slaand.site.patterns.state.NewOrder;
+import com.slaand.site.patterns.state.ReadyOrder;
 import com.slaand.site.repository.ItemRepository;
 import com.slaand.site.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -151,11 +152,11 @@ class OrderMapperTest {
                 .address("orderAddress")
                 .build();
 
-        actualEntity.setStatus(new NewOrder());
+        actualEntity.setStatus(new ReadyOrder());
 
         expectedDto.setUserId(678L);
         expectedDto.setItemId(543L);
-        expectedDto.setStatus(OrderStatus.NEW);
+        expectedDto.setStatus(OrderStatus.READY);
 
         OrderDto testDto = orderMapper.orderEntityToOrderDto(actualEntity);
         assertThat(testDto).isEqualToComparingFieldByField(expectedDto);
